@@ -624,117 +624,204 @@ section { padding: 100px 0; }
 .music-control {
     position: fixed;
     bottom: 25px;
-    left: 25px;
-    z-index: 1000;
+    right: 25px;
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    gap: 0;
 }
 .music-btn {
-    width: 50px;
-    height: 50px;
+    width: 56px;
+    height: 56px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #1a1a25 0%, #12121a 100%);
-    backdrop-filter: blur(15px);
-    border: 1px solid rgba(212, 168, 83, 0.3);
+    background: linear-gradient(145deg, #1e1e2e 0%, #0f0f18 100%);
+    border: none;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     padding: 0;
+    position: relative;
+    box-shadow:
+        0 6px 25px rgba(0, 0, 0, 0.5),
+        0 0 0 1px rgba(212, 168, 83, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 .music-btn:hover {
-    transform: scale(1.08);
-    border-color: rgba(212, 168, 83, 0.6);
-    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.4), 0 0 15px rgba(212, 168, 83, 0.15);
+    transform: scale(1.1);
+    box-shadow:
+        0 10px 35px rgba(0, 0, 0, 0.6),
+        0 0 20px rgba(212, 168, 83, 0.2),
+        0 0 0 1px rgba(212, 168, 83, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
-.music-vinyl {
-    width: 36px;
-    height: 36px;
+.music-cd {
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
-    background: #0a0a0f;
     position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: transform 0.1s linear;
+    transition: transform 0.5s ease;
 }
-.music-vinyl.playing {
-    animation: spin 8s linear infinite;
+.music-cd.playing {
+    animation: cdSpin 6s linear infinite;
 }
-.music-vinyl::before {
+.music-cd::before {
     content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background:
+        radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.08) 0%, transparent 50%),
+        conic-gradient(
+            from 0deg,
+            #111118 0deg,
+            #1a1a25 30deg,
+            #111118 60deg,
+            #1a1a25 90deg,
+            #111118 120deg,
+            #1a1a25 150deg,
+            #111118 180deg,
+            #1a1a25 210deg,
+            #111118 240deg,
+            #1a1a25 270deg,
+            #111118 300deg,
+            #1a1a25 330deg,
+            #111118 360deg
+        );
+    box-shadow:
+        inset 0 0 20px rgba(0, 0, 0, 0.8),
+        0 0 15px rgba(0, 0, 0, 0.5);
+}
+.music-cd::after {
+    content: '';
+    position: absolute;
+    inset: 8px;
+    border-radius: 50%;
+    background: repeating-radial-gradient(
+        circle at center,
+        transparent 0px,
+        transparent 2px,
+        rgba(255, 255, 255, 0.02) 2px,
+        rgba(255, 255, 255, 0.02) 3px
+    );
+}
+.music-cd-label {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 100%;
-    height: 100%;
+    width: 18px;
+    height: 18px;
     border-radius: 50%;
-    background: repeating-radial-gradient(
-        circle at center,
-        #0a0a0f 0px,
-        #0a0a0f 1px,
-        #151520 1px,
-        #151520 2px
-    );
-}
-.music-vinyl-center {
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    background: var(--gradient-gold);
-    position: relative;
-    z-index: 1;
+    background: linear-gradient(135deg, #d4a853 0%, #f0c878 50%, #d4a853 100%);
+    z-index: 2;
     display: flex;
     align-items: center;
     justify-content: center;
+    box-shadow:
+        0 0 10px rgba(212, 168, 83, 0.4),
+        inset 0 1px 2px rgba(255, 255, 255, 0.3);
 }
-.music-vinyl-center::after {
+.music-cd-label::before {
     content: '';
-    width: 4px;
-    height: 4px;
+    width: 5px;
+    height: 5px;
     border-radius: 50%;
     background: #0a0a0f;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.5);
 }
-.music-icon {
+.music-cd-shine {
     position: absolute;
-    color: var(--accent-gold);
-    z-index: 2;
-    opacity: 0;
-    transition: opacity 0.3s ease;
+    top: 3px;
+    left: 15%;
+    width: 30%;
+    height: 50%;
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.12) 0%,
+        rgba(255, 255, 255, 0.03) 40%,
+        transparent 60%
+    );
+    border-radius: 50%;
+    transform: rotate(-30deg);
+    pointer-events: none;
 }
-.music-icon.show {
+.music-icon-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 3;
+    color: #0a0a0f;
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+.music-icon-overlay.show {
     opacity: 1;
 }
-.music-icon svg { width: 14px; height: 14px; }
-.music-hint {
+.music-icon-overlay svg { width: 16px; height: 16px; }
+.music-waves {
     position: absolute;
-    left: 60px;
+    left: -50px;
     top: 50%;
     transform: translateY(-50%);
-    background: rgba(26, 26, 37, 0.95);
-    backdrop-filter: blur(10px);
-    padding: 6px 14px;
-    border-radius: 20px;
+    display: flex;
+    align-items: flex-end;
+    gap: 3px;
+    height: 20px;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+.music-waves.show { opacity: 1; }
+.music-wave {
+    width: 3px;
+    background: var(--accent-gold);
+    border-radius: 2px;
+    opacity: 0.8;
+}
+.music-wave:nth-child(1) { animation: waveAnim 0.8s ease-in-out infinite; height: 8px; }
+.music-wave:nth-child(2) { animation: waveAnim 0.8s ease-in-out infinite 0.15s; height: 14px; }
+.music-wave:nth-child(3) { animation: waveAnim 0.8s ease-in-out infinite 0.3s; height: 20px; }
+.music-wave:nth-child(4) { animation: waveAnim 0.8s ease-in-out infinite 0.45s; height: 12px; }
+.music-hint {
+    position: absolute;
+    right: 70px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(20, 20, 30, 0.95);
+    backdrop-filter: blur(15px);
+    padding: 8px 16px;
+    border-radius: 25px;
     font-size: 12px;
     color: var(--text-secondary);
     white-space: nowrap;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.3s ease;
-    border: 1px solid rgba(212, 168, 83, 0.15);
+    transition: all 0.3s ease;
+    border: 1px solid rgba(212, 168, 83, 0.2);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
-.music-btn:hover + .music-hint { opacity: 1; }
-@keyframes spin {
+.music-control:hover .music-hint {
+    opacity: 1;
+    transform: translateY(-50%) translateX(-5px);
+}
+@keyframes cdSpin {
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
 }
+@keyframes waveAnim {
+    0%, 100% { transform: scaleY(0.4); }
+    50% { transform: scaleY(1); }
+}
 @media (max-width: 768px) {
-    .music-control { bottom: 20px; left: 20px; }
-    .music-btn { width: 44px; height: 44px; }
-    .music-vinyl { width: 32px; height: 32px; }
-    .music-vinyl-center { width: 12px; height: 12px; }
-    .music-icon svg { width: 12px; height: 12px; }
+    .music-control { bottom: 20px; right: 20px; }
+    .music-btn { width: 50px; height: 50px; }
+    .music-cd { width: 40px; height: 40px; }
+    .music-cd-label { width: 16px; height: 16px; }
+    .music-cd-label::before { width: 4px; height: 4px; }
+    .music-icon-overlay svg { width: 14px; height: 14px; }
+    .music-waves { display: none; }
     .music-hint { display: none; }
 }
 .toast {
@@ -1115,22 +1202,29 @@ section.visible { opacity: 1; transform: translateY(0); }
     </div>
 
     <div class="music-control">
+        <span class="music-hint" id="musicHint">点击播放背景音乐</span>
+        <div class="music-waves" id="musicWaves">
+            <span class="music-wave"></span>
+            <span class="music-wave"></span>
+            <span class="music-wave"></span>
+            <span class="music-wave"></span>
+        </div>
         <button class="music-btn" id="musicBtn" onclick="toggleMusic()">
-            <div class="music-vinyl" id="musicVinyl">
-                <div class="music-vinyl-center"></div>
-                <div class="music-icon show" id="iconPlay">
+            <div class="music-cd" id="musicCd">
+                <div class="music-cd-shine"></div>
+                <div class="music-cd-label"></div>
+                <div class="music-icon-overlay show" id="iconPlay">
                     <svg viewBox="0 0 24 24" fill="currentColor">
                         <path d="M8 5v14l11-7z"/>
                     </svg>
                 </div>
-                <div class="music-icon" id="iconPause">
+                <div class="music-icon-overlay" id="iconPause">
                     <svg viewBox="0 0 24 24" fill="currentColor">
                         <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
                     </svg>
                 </div>
             </div>
         </button>
-        <span class="music-hint" id="musicHint">点击播放背景音乐</span>
     </div>
     <audio id="bgMusic" loop preload="auto" volume="0.4">
         <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3" type="audio/mpeg">
@@ -1184,6 +1278,9 @@ function setLanguage(lang) {
         if (i18n[lang][key]) el.textContent = i18n[lang][key];
     });
     document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
+    if (musicHint) {
+        musicHint.textContent = isMusicPlaying ? i18n[lang]['music-playing'] : i18n[lang]['music-play-hint'];
+    }
 }
 
 function scrollToSection(id) {
@@ -1208,28 +1305,39 @@ function closeMobileMenu() {
 let isMusicPlaying = false;
 let hasTriedAutoplay = false;
 const bgMusic = document.getElementById('bgMusic');
-const musicVinyl = document.getElementById('musicVinyl');
+const musicCd = document.getElementById('musicCd');
+const musicWaves = document.getElementById('musicWaves');
 const iconPlay = document.getElementById('iconPlay');
 const iconPause = document.getElementById('iconPause');
 const musicHint = document.getElementById('musicHint');
 
-bgMusic.volume = 0.35;
+bgMusic.volume = 0.3;
+
+function updateMusicUI(playing) {
+    if (playing) {
+        musicCd.classList.add('playing');
+        musicWaves.classList.add('show');
+        iconPlay.classList.remove('show');
+        iconPause.classList.add('show');
+        musicHint.textContent = i18n[currentLang]['music-playing'];
+    } else {
+        musicCd.classList.remove('playing');
+        musicWaves.classList.remove('show');
+        iconPlay.classList.add('show');
+        iconPause.classList.remove('show');
+        musicHint.textContent = i18n[currentLang]['music-play-hint'];
+    }
+}
 
 function toggleMusic() {
     if (isMusicPlaying) {
         bgMusic.pause();
         isMusicPlaying = false;
-        musicVinyl.classList.remove('playing');
-        iconPlay.classList.add('show');
-        iconPause.classList.remove('show');
-        musicHint.textContent = currentLang === 'zh' ? '点击播放背景音乐' : 'Click to play music';
+        updateMusicUI(false);
     } else {
         bgMusic.play().then(() => {
             isMusicPlaying = true;
-            musicVinyl.classList.add('playing');
-            iconPlay.classList.remove('show');
-            iconPause.classList.add('show');
-            musicHint.textContent = currentLang === 'zh' ? '正在播放...' : 'Now playing...';
+            updateMusicUI(true);
         }).catch(err => {
             console.log('播放失败:', err);
         });
@@ -1241,10 +1349,7 @@ function tryAutoPlay() {
     hasTriedAutoplay = true;
     bgMusic.play().then(() => {
         isMusicPlaying = true;
-        musicVinyl.classList.add('playing');
-        iconPlay.classList.remove('show');
-        iconPause.classList.add('show');
-        musicHint.textContent = currentLang === 'zh' ? '正在播放...' : 'Now playing...';
+        updateMusicUI(true);
     }).catch(() => {
     });
 }
