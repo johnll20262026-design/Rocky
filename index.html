@@ -615,15 +615,127 @@ section { padding: 100px 0; }
 }
 .tech-btn:hover .tech-btn-text { color: var(--accent-gold-light); }
 @media (max-width: 768px) {
-    .tech-support { bottom: 20px; right: 20px; animation: gentleFloatMobile 4s ease-in-out infinite; }
-    @keyframes gentleFloatMobile {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-3px); }
-    }
     .tech-btn { padding: 10px 16px 10px 12px; gap: 8px; }
     .tech-btn-icon { width: 26px; height: 26px; }
     .tech-btn-icon svg { width: 14px; height: 14px; }
     .tech-btn-text { font-size: 12px; }
+}
+
+.music-control {
+    position: fixed;
+    bottom: 25px;
+    left: 25px;
+    z-index: 1000;
+}
+.music-btn {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #1a1a25 0%, #12121a 100%);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(212, 168, 83, 0.3);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    padding: 0;
+}
+.music-btn:hover {
+    transform: scale(1.08);
+    border-color: rgba(212, 168, 83, 0.6);
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.4), 0 0 15px rgba(212, 168, 83, 0.15);
+}
+.music-vinyl {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #0a0a0f;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.1s linear;
+}
+.music-vinyl.playing {
+    animation: spin 8s linear infinite;
+}
+.music-vinyl::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: repeating-radial-gradient(
+        circle at center,
+        #0a0a0f 0px,
+        #0a0a0f 1px,
+        #151520 1px,
+        #151520 2px
+    );
+}
+.music-vinyl-center {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--gradient-gold);
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.music-vinyl-center::after {
+    content: '';
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: #0a0a0f;
+}
+.music-icon {
+    position: absolute;
+    color: var(--accent-gold);
+    z-index: 2;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+.music-icon.show {
+    opacity: 1;
+}
+.music-icon svg { width: 14px; height: 14px; }
+.music-hint {
+    position: absolute;
+    left: 60px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(26, 26, 37, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    border: 1px solid rgba(212, 168, 83, 0.15);
+}
+.music-btn:hover + .music-hint { opacity: 1; }
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+@media (max-width: 768px) {
+    .music-control { bottom: 20px; left: 20px; }
+    .music-btn { width: 44px; height: 44px; }
+    .music-vinyl { width: 32px; height: 32px; }
+    .music-vinyl-center { width: 12px; height: 12px; }
+    .music-icon svg { width: 12px; height: 12px; }
+    .music-hint { display: none; }
 }
 .toast {
     position: fixed;
@@ -1002,6 +1114,28 @@ section.visible { opacity: 1; transform: translateY(0); }
         </a>
     </div>
 
+    <div class="music-control">
+        <button class="music-btn" id="musicBtn" onclick="toggleMusic()">
+            <div class="music-vinyl" id="musicVinyl">
+                <div class="music-vinyl-center"></div>
+                <div class="music-icon show" id="iconPlay">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M8 5v14l11-7z"/>
+                    </svg>
+                </div>
+                <div class="music-icon" id="iconPause">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                    </svg>
+                </div>
+            </div>
+        </button>
+        <span class="music-hint" id="musicHint">点击播放背景音乐</span>
+    </div>
+    <audio id="bgMusic" loop preload="auto" volume="0.4">
+        <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3" type="audio/mpeg">
+    </audio>
+
     <div class="toast" id="toast"></div>
 
     <script>
@@ -1018,6 +1152,7 @@ const i18n = {
         'skill-finance-title': '财务 · 专业','skill-finance-desc': '财务专业背景，具备严谨的逻辑思维和数据分析能力。在数字的世界里保持清醒，用专业的态度处理每一个数据。',
         'contact-title': '联系我','contact-heading': '期待与你相识','contact-desc': '无论是聊音乐、聊财务，还是分享生活，都欢迎添加我的微信。让我们一起创造更多可能！',
         'qr-hint': '微信二维码位置','qr-desc': '替换 images/wechat-qr.png','wechat-id': '微信号','copy-id': '复制微信号','copy-success': '微信号已复制！',
+        'music-play-hint': '点击播放背景音乐','music-playing': '正在播放...',
         'footer-text': '用音乐表达，用专业证明 © 2024 Rocky'
     },
     en: {
@@ -1032,6 +1167,7 @@ const i18n = {
         'skill-finance-title': 'Finance · Professional','skill-finance-desc': 'Finance professional with rigorous analytical thinking and data capabilities.',
         'contact-title': 'Contact Me','contact-heading': 'Looking Forward to Meeting You','contact-desc': "Whether it's music, finance, or life, feel free to add me on WeChat!",
         'qr-hint': 'WeChat QR Code','qr-desc': 'Replace with images/wechat-qr.png','wechat-id': 'WeChat ID','copy-id': 'Copy ID','copy-success': 'WeChat ID copied!',
+        'music-play-hint': 'Click to play background music','music-playing': 'Now playing...',
         'footer-text': 'Expressed through music, proven through professionalism © 2024 Rocky'
     }
 };
@@ -1068,6 +1204,54 @@ function closeMobileMenu() {
     navLinks.classList.remove('open');
     hamburger.classList.remove('active');
 }
+
+let isMusicPlaying = false;
+let hasTriedAutoplay = false;
+const bgMusic = document.getElementById('bgMusic');
+const musicVinyl = document.getElementById('musicVinyl');
+const iconPlay = document.getElementById('iconPlay');
+const iconPause = document.getElementById('iconPause');
+const musicHint = document.getElementById('musicHint');
+
+bgMusic.volume = 0.35;
+
+function toggleMusic() {
+    if (isMusicPlaying) {
+        bgMusic.pause();
+        isMusicPlaying = false;
+        musicVinyl.classList.remove('playing');
+        iconPlay.classList.add('show');
+        iconPause.classList.remove('show');
+        musicHint.textContent = currentLang === 'zh' ? '点击播放背景音乐' : 'Click to play music';
+    } else {
+        bgMusic.play().then(() => {
+            isMusicPlaying = true;
+            musicVinyl.classList.add('playing');
+            iconPlay.classList.remove('show');
+            iconPause.classList.add('show');
+            musicHint.textContent = currentLang === 'zh' ? '正在播放...' : 'Now playing...';
+        }).catch(err => {
+            console.log('播放失败:', err);
+        });
+    }
+}
+
+function tryAutoPlay() {
+    if (hasTriedAutoplay) return;
+    hasTriedAutoplay = true;
+    bgMusic.play().then(() => {
+        isMusicPlaying = true;
+        musicVinyl.classList.add('playing');
+        iconPlay.classList.remove('show');
+        iconPause.classList.add('show');
+        musicHint.textContent = currentLang === 'zh' ? '正在播放...' : 'Now playing...';
+    }).catch(() => {
+    });
+}
+
+document.addEventListener('click', tryAutoPlay, { once: true });
+document.addEventListener('touchstart', tryAutoPlay, { once: true });
+document.addEventListener('scroll', tryAutoPlay, { once: true });
 
 document.querySelectorAll('.nav-link').forEach(link => {
     link.addEventListener('click', e => {
