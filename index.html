@@ -389,10 +389,11 @@ section { padding: 100px 0; }
     border-radius: 16px;
     overflow: hidden;
     cursor: pointer;
-    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
     opacity: 0;
     pointer-events: none;
+    transform-origin: center bottom;
 }
 .photo-inner {
     width: 100%;
@@ -433,12 +434,12 @@ section { padding: 100px 0; }
 }
 .photo-card:hover .photo-overlay { transform: translateY(0); opacity: 1; }
 .photo-caption { color: white; font-size: 16px; font-weight: 500; }
-.photo-card.stack-prev-2 { transform: rotate(-6deg) translateX(-40px) scale(0.82); z-index: 1; opacity: 0.6; pointer-events: none; }
-.photo-card.stack-prev-1 { transform: rotate(5deg) translateX(-20px) scale(0.88); z-index: 2; opacity: 0.8; pointer-events: none; }
-.photo-card.stack-active { transform: rotate(0deg) translateX(0) scale(1); z-index: 10; opacity: 1; pointer-events: auto; }
-.photo-card.stack-next-1 { transform: rotate(-4deg) translateX(20px) scale(0.88); z-index: 2; opacity: 0.8; pointer-events: none; }
-.photo-card.stack-next-2 { transform: rotate(6deg) translateX(40px) scale(0.82); z-index: 1; opacity: 0.6; pointer-events: none; }
-.photo-card.stack-next-3 { transform: rotate(-3deg) translateX(50px) scale(0.76); z-index: 0; opacity: 0.3; pointer-events: none; }
+.photo-card.stack-hidden { opacity: 0; pointer-events: none; transform: scale(0.7) translateY(40px); }
+.photo-card.stack-behind-left { transform: rotate(-8deg) translateX(-45px) scale(0.85); z-index: 1; opacity: 0.5; pointer-events: none; }
+.photo-card.stack-peek-left { transform: rotate(-4deg) translateX(-22px) scale(0.93); z-index: 2; opacity: 0.85; pointer-events: none; box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4); }
+.photo-card.stack-active { transform: rotate(0deg) translateX(0) scale(1); z-index: 10; opacity: 1; pointer-events: auto; box-shadow: 0 25px 70px rgba(0, 0, 0, 0.6); }
+.photo-card.stack-peek-right { transform: rotate(4deg) translateX(22px) scale(0.93); z-index: 2; opacity: 0.85; pointer-events: none; box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4); }
+.photo-card.stack-behind-right { transform: rotate(8deg) translateX(45px) scale(0.85); z-index: 1; opacity: 0.5; pointer-events: none; }
 .photo-controls { display: flex; align-items: center; gap: 25px; }
 .photo-nav {
     width: 45px;
@@ -483,6 +484,8 @@ section { padding: 100px 0; }
     width: 100%;
     padding-top: 56.25%;
     background: #0a0a0a;
+    border-radius: 12px 12px 0 0;
+    overflow: hidden;
 }
 .video-wrapper video {
     position: absolute;
@@ -490,39 +493,37 @@ section { padding: 100px 0; }
     left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
+    background: #000;
 }
-.video-placeholder {
+.video-error {
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    display: flex;
+    display: none;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
     color: var(--text-muted);
     gap: 8px;
-    pointer-events: none;
 }
-.video-wrapper video.loaded + .video-placeholder { display: none; }
-.video-wrapper video.error { display: none; }
-.video-placeholder-icon {
-    width: 60px;
-    height: 60px;
+.video-error.show { display: flex; }
+.video-error-icon {
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
-    background: linear-gradient(135deg, var(--accent-gold), var(--accent-gold-light));
+    background: linear-gradient(135deg, #c0392b, #e74c3c);
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--bg-primary);
-    font-size: 24px;
+    color: #fff;
+    font-size: 20px;
     margin-bottom: 8px;
 }
-.video-placeholder span { font-size: 15px; color: var(--text-secondary); }
-.video-placeholder small { font-size: 12px; opacity: 0.7; }
+.video-error span { font-size: 14px; color: var(--text-secondary); }
 .video-info { padding: 20px; }
 .video-caption {
     font-size: 16px;
@@ -1303,13 +1304,12 @@ section.visible { opacity: 1; transform: translateY(0); }
             <div class="videos-grid">
                 <div class="video-card">
                     <div class="video-wrapper">
-                        <video controls preload="metadata" poster="images/photo4.jpg">
+                        <video controls preload="metadata" playsinline>
                             <source src="videos/video1.mp4" type="video/mp4">
                         </video>
-                        <div class="video-placeholder">
-                            <div class="video-placeholder-icon">▶</div>
-                            <span>video1.mp4</span>
-                            <small>视频加载中...</small>
+                        <div class="video-error" id="videoError">
+                            <div class="video-error-icon">!</div>
+                            <span>视频加载失败，请检查文件格式</span>
                         </div>
                     </div>
                     <div class="video-info">
@@ -1621,18 +1621,18 @@ function showPhoto(index) {
     currentPhotoIndex = index;
     const cards = document.querySelectorAll('.photo-card');
     const dots = document.querySelectorAll('.dot');
-    const stackClasses = ['stack-prev-2', 'stack-prev-1', 'stack-active', 'stack-next-1', 'stack-next-2', 'stack-next-3'];
+    const stackClasses = ['stack-hidden', 'stack-behind-left', 'stack-peek-left', 'stack-active', 'stack-peek-right', 'stack-behind-right'];
     cards.forEach((card, i) => {
         card.classList.remove('active', ...stackClasses);
         const offset = (i - index + photoCount) % photoCount;
         let cls;
         switch(offset) {
             case 0: cls = 'stack-active'; break;
-            case 1: cls = 'stack-next-1'; break;
-            case 2: cls = 'stack-next-2'; break;
-            case 3: cls = 'stack-next-3'; break;
-            case 4: cls = 'stack-prev-2'; break;
-            case 5: cls = 'stack-prev-1'; break;
+            case 1: cls = 'stack-peek-right'; break;
+            case 2: cls = 'stack-behind-right'; break;
+            case 3: cls = 'stack-hidden'; break;
+            case 4: cls = 'stack-behind-left'; break;
+            case 5: cls = 'stack-peek-left'; break;
         }
         card.classList.add(cls);
     });
@@ -1645,8 +1645,13 @@ function prevPhoto() { showPhoto((currentPhotoIndex - 1 + photoCount) % photoCou
 setInterval(() => { nextPhoto(); }, 5000);
 
 document.querySelectorAll('.video-wrapper video').forEach(video => {
-    video.addEventListener('loadeddata', () => video.classList.add('loaded'));
-    video.addEventListener('error', () => video.classList.add('error'));
+    const errorEl = video.parentElement.querySelector('.video-error');
+    video.addEventListener('error', () => {
+        if (errorEl) errorEl.classList.add('show');
+    });
+    video.addEventListener('loadeddata', () => {
+        if (errorEl) errorEl.classList.remove('show');
+    });
 });
 
 function copyWechat() {
