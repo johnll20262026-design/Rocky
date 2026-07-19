@@ -453,6 +453,12 @@ section { padding: 100px 0; }
 .photo-card:hover .photo-overlay { transform: translateY(0); opacity: 1; }
 .photo-caption { color: white; font-size: 16px; font-weight: 500; }
 .photo-card.stack-hidden { opacity: 0; pointer-events: none; transform: scale(0.7) translateY(40px); }
+.photo-card[data-index="0"] { transform: rotate(-8deg) translateX(-45px) scale(0.85); z-index: 1; opacity: 0.5; pointer-events: none; }
+.photo-card[data-index="1"] { transform: rotate(-4deg) translateX(-22px) scale(0.93); z-index: 2; opacity: 0.85; pointer-events: none; box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4); }
+.photo-card[data-index="2"] { transform: rotate(0deg) translateX(0) scale(1); z-index: 10; opacity: 1; pointer-events: auto; box-shadow: 0 25px 70px rgba(0, 0, 0, 0.6); }
+.photo-card[data-index="3"] { transform: rotate(4deg) translateX(22px) scale(0.93); z-index: 2; opacity: 0.85; pointer-events: none; box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4); }
+.photo-card[data-index="4"] { transform: rotate(8deg) translateX(45px) scale(0.85); z-index: 1; opacity: 0.5; pointer-events: none; }
+.photo-card[data-index="5"] { opacity: 0; pointer-events: none; transform: scale(0.7) translateY(40px); }
 .photo-card.stack-behind-left { transform: rotate(-8deg) translateX(-45px) scale(0.85); z-index: 1; opacity: 0.5; pointer-events: none; }
 .photo-card.stack-peek-left { transform: rotate(-4deg) translateX(-22px) scale(0.93); z-index: 2; opacity: 0.85; pointer-events: none; box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4); }
 .photo-card.stack-active { transform: rotate(0deg) translateX(0) scale(1); z-index: 10; opacity: 1; pointer-events: auto; box-shadow: 0 25px 70px rgba(0, 0, 0, 0.6); }
@@ -513,6 +519,7 @@ section { padding: 100px 0; }
     height: 100%;
     object-fit: contain;
     background: #000;
+    z-index: 1;
 }
 .video-error {
     position: absolute;
@@ -530,9 +537,9 @@ section { padding: 100px 0; }
     transition: opacity 0.3s ease;
     opacity: 0;
     pointer-events: none;
+    z-index: -1;
 }
-.video-error.show { opacity: 1; pointer-events: auto; }
-.video-error.hide { opacity: 0; pointer-events: none; }
+.video-error.show { opacity: 1; pointer-events: auto; z-index: 2; }
 .video-error-icon {
     width: 50px;
     height: 50px;
@@ -1092,6 +1099,12 @@ section.visible { opacity: 1; transform: translateY(0); }
     .info-cards { grid-template-columns: 1fr; }
     .photo-showcase { padding: 0 60px; overflow: visible; }
     .photo-stack { height: 340px; max-width: 220px; overflow: visible; margin: 0 auto; }
+    .photo-card[data-index="0"] { transform: rotate(-5deg) translateX(-18px) scale(0.85); }
+    .photo-card[data-index="1"] { transform: rotate(-2deg) translateX(-9px) scale(0.93); }
+    .photo-card[data-index="2"] { transform: rotate(0deg) translateX(0) scale(1); }
+    .photo-card[data-index="3"] { transform: rotate(2deg) translateX(9px) scale(0.93); }
+    .photo-card[data-index="4"] { transform: rotate(5deg) translateX(18px) scale(0.85); }
+    .photo-card[data-index="5"] { transform: scale(0.65) translateY(30px); }
     .photo-card.stack-behind-left { transform: rotate(-5deg) translateX(-18px) scale(0.85); }
     .photo-card.stack-peek-left { transform: rotate(-2deg) translateX(-9px) scale(0.93); }
     .photo-card.stack-peek-right { transform: rotate(2deg) translateX(9px) scale(0.93); }
@@ -1230,7 +1243,7 @@ section.visible { opacity: 1; transform: translateY(0); }
                 <div class="photo-stack" id="photoStack">
                     <div class="photo-card" data-index="0" onclick="showPhoto(0)">
                         <div class="photo-inner">
-                            <img loading="eager" decoding="async" src="./images/photo1.jpg?v=4" alt="Photo 1">
+                            <img src="./images/photo1.jpg?v=5" alt="Photo 1">
                             <div class="photo-overlay">
                                 <span class="photo-caption" data-i18n="photo1-caption">山河之间，摇滚不止</span>
                             </div>
@@ -1238,7 +1251,7 @@ section.visible { opacity: 1; transform: translateY(0); }
                     </div>
                     <div class="photo-card" data-index="1" onclick="showPhoto(1)">
                         <div class="photo-inner">
-                            <img loading="eager" decoding="async" src="./images/photo2.jpg?v=4" alt="Photo 2">
+                            <img src="./images/photo2.jpg?v=5" alt="Photo 2">
                             <div class="photo-overlay">
                                 <span class="photo-caption" data-i18n="photo2-caption">静谧时光，思考人生</span>
                             </div>
@@ -1246,7 +1259,7 @@ section.visible { opacity: 1; transform: translateY(0); }
                     </div>
                     <div class="photo-card" data-index="2" onclick="showPhoto(2)">
                         <div class="photo-inner">
-                            <img loading="eager" decoding="async" src="./images/photo3.jpg?v=4" alt="Photo 3">
+                            <img src="./images/photo3.jpg?v=5" alt="Photo 3">
                             <div class="photo-overlay">
                                 <span class="photo-caption" data-i18n="photo3-caption">展翅高飞，自由翱翔</span>
                             </div>
@@ -1254,7 +1267,7 @@ section.visible { opacity: 1; transform: translateY(0); }
                     </div>
                     <div class="photo-card" data-index="3" onclick="showPhoto(3)">
                         <div class="photo-inner">
-                            <img loading="eager" decoding="async" src="./images/photo4.jpg?v=4" alt="Photo 4">
+                            <img src="./images/photo4.jpg?v=5" alt="Photo 4">
                             <div class="photo-overlay">
                                 <span class="photo-caption" data-i18n="photo4-caption">音乐时光，旋律相伴</span>
                             </div>
@@ -1262,7 +1275,7 @@ section.visible { opacity: 1; transform: translateY(0); }
                     </div>
                     <div class="photo-card" data-index="4" onclick="showPhoto(4)">
                         <div class="photo-inner">
-                            <img loading="eager" decoding="async" src="./images/photo5.jpg?v=4" alt="Photo 5">
+                            <img src="./images/photo5.jpg?v=5" alt="Photo 5">
                             <div class="photo-overlay">
                                 <span class="photo-caption" data-i18n="photo5-caption">精彩瞬间，记录生活</span>
                             </div>
@@ -1270,7 +1283,7 @@ section.visible { opacity: 1; transform: translateY(0); }
                     </div>
                     <div class="photo-card" data-index="5" onclick="showPhoto(5)">
                         <div class="photo-inner">
-                            <img loading="eager" decoding="async" src="./images/photo6.jpg?v=4" alt="Photo 6">
+                            <img src="./images/photo6.jpg?v=5" alt="Photo 6">
                             <div class="photo-overlay">
                                 <span class="photo-caption" data-i18n="photo6-caption">美好时刻，永恒记忆</span>
                             </div>
@@ -1307,8 +1320,8 @@ section.visible { opacity: 1; transform: translateY(0); }
             <div class="videos-grid">
                 <div class="video-card">
                     <div class="video-wrapper">
-                        <video controls playsinline webkit-playsinline x5-playsinline preload="metadata" poster="./images/photo1.jpg?v=4" x5-video-player-type="h5" x5-video-player-fullscreen="true">
-                            <source src="./videos/video1.mp4?v=4" type="video/mp4">
+                        <video controls playsinline webkit-playsinline preload="metadata">
+                            <source src="./videos/video1.mp4?v=5" type="video/mp4">
                             您的浏览器不支持视频播放
                         </video>
                         <div class="video-error" id="videoError">
@@ -1402,7 +1415,7 @@ section.visible { opacity: 1; transform: translateY(0); }
                 </div>
                 <div class="wechat-card">
                     <div class="wechat-qr-wrapper">
-                        <img class="wechat-qr-img" loading="eager" decoding="async" src="./images/wechat-qr.png?v=4" alt="微信二维码">
+                        <img class="wechat-qr-img" src="./images/wechat-qr.png?v=5" alt="微信二维码">
                     </div>
                     <div class="wechat-info">
                         <div class="wechat-id-section">
@@ -1639,26 +1652,21 @@ setInterval(() => { nextPhoto(); }, 5000);
 
 document.querySelectorAll('.video-wrapper video').forEach(video => {
     const errorEl = video.parentElement.querySelector('.video-error');
+    let hasError = false;
     const showMsg = (msg, isError) => {
-        if (errorEl) {
+        if (errorEl && isError) {
+            hasError = true;
             const icon = errorEl.querySelector('.video-error-icon');
             const span = errorEl.querySelector('span');
             if (msg) span.textContent = msg;
-            if (isError) {
-                icon.style.background = 'linear-gradient(135deg, #c0392b, #e74c3c)';
-                icon.textContent = '!';
-            } else {
-                icon.style.background = 'linear-gradient(135deg, #d4a853, #f0c878)';
-                icon.textContent = '⟳';
-            }
+            icon.style.background = 'linear-gradient(135deg, #c0392b, #e74c3c)';
+            icon.textContent = '!';
             errorEl.classList.add('show');
-            errorEl.classList.remove('hide');
         }
     };
     const hideOverlay = () => {
         if (errorEl) {
             errorEl.classList.remove('show');
-            errorEl.classList.add('hide');
         }
     };
     video.addEventListener('loadedmetadata', hideOverlay);
@@ -1667,15 +1675,6 @@ document.querySelectorAll('.video-wrapper video').forEach(video => {
     video.addEventListener('play', hideOverlay);
     video.addEventListener('error', () => {
         showMsg('视频加载失败，请检查网络或刷新页面', true);
-    });
-    video.addEventListener('stalled', () => {
-        showMsg('网络较慢，视频正在缓冲...', false);
-    });
-    video.addEventListener('waiting', () => {
-        showMsg('视频缓冲中...', false);
-    });
-    video.addEventListener('click', () => {
-        video.play().catch(() => {});
     });
 });
 
