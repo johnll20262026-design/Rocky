@@ -2,7 +2,10 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>Rocky | Finance & Music</title>
     <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -416,6 +419,9 @@ section { padding: 100px 0; }
     width: 100%;
     height: 100%;
     object-fit: cover;
+    display: block;
+    min-height: 100%;
+    background: transparent;
 }
 .photo-placeholder {
     width: 100%;
@@ -1084,12 +1090,12 @@ section.visible { opacity: 1; transform: translateY(0); }
     .nav-link:last-child { border-bottom: none; }
     .nav-link::after { display: none; }
     .info-cards { grid-template-columns: 1fr; }
-    .photo-showcase { padding: 0 50px; overflow: visible; }
-    .photo-stack { height: 360px; max-width: 240px; overflow: visible; margin: 0 auto; }
-    .photo-card.stack-behind-left { transform: rotate(-6deg) translateX(-22px) scale(0.85); }
-    .photo-card.stack-peek-left { transform: rotate(-3deg) translateX(-11px) scale(0.93); }
-    .photo-card.stack-peek-right { transform: rotate(3deg) translateX(11px) scale(0.93); }
-    .photo-card.stack-behind-right { transform: rotate(6deg) translateX(22px) scale(0.85); }
+    .photo-showcase { padding: 0 60px; overflow: visible; }
+    .photo-stack { height: 340px; max-width: 220px; overflow: visible; margin: 0 auto; }
+    .photo-card.stack-behind-left { transform: rotate(-5deg) translateX(-18px) scale(0.85); }
+    .photo-card.stack-peek-left { transform: rotate(-2deg) translateX(-9px) scale(0.93); }
+    .photo-card.stack-peek-right { transform: rotate(2deg) translateX(9px) scale(0.93); }
+    .photo-card.stack-behind-right { transform: rotate(5deg) translateX(18px) scale(0.85); }
     .photo-card.stack-hidden { transform: scale(0.65) translateY(30px); }
     .skill-card { padding: 30px 25px; }
     .videos-grid { grid-template-columns: 1fr; gap: 20px; }
@@ -1301,7 +1307,7 @@ section.visible { opacity: 1; transform: translateY(0); }
             <div class="videos-grid">
                 <div class="video-card">
                     <div class="video-wrapper">
-                        <video controls playsinline webkit-playsinline x5-playsinline preload="metadata" x5-video-player-type="h5" x5-video-player-fullscreen="true">
+                        <video controls playsinline webkit-playsinline x5-playsinline preload="metadata" poster="./images/photo1.jpg?v=4" x5-video-player-type="h5" x5-video-player-fullscreen="true">
                             <source src="./videos/video1.mp4?v=4" type="video/mp4">
                             您的浏览器不支持视频播放
                         </video>
