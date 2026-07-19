@@ -397,8 +397,8 @@ section { padding: 100px 0; }
     cursor: pointer;
     transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-    opacity: 0;
-    pointer-events: none;
+    opacity: 1;
+    pointer-events: auto;
     transform-origin: center bottom;
 }
 .photo-card[data-index="0"] { background: linear-gradient(135deg, #0f3460 0%, #16213e 50%, #1a1a2e 100%); }
@@ -522,7 +522,10 @@ section { padding: 100px 0; }
     color: var(--text-muted);
     gap: 8px;
     transition: opacity 0.3s ease;
+    opacity: 0;
+    pointer-events: none;
 }
+.video-error.show { opacity: 1; pointer-events: auto; }
 .video-error.hide { opacity: 0; pointer-events: none; }
 .video-error-icon {
     width: 50px;
@@ -1081,12 +1084,12 @@ section.visible { opacity: 1; transform: translateY(0); }
     .nav-link:last-child { border-bottom: none; }
     .nav-link::after { display: none; }
     .info-cards { grid-template-columns: 1fr; }
-    .photo-showcase { padding: 0 30px; }
-    .photo-stack { height: 380px; max-width: 280px; }
-    .photo-card.stack-behind-left { transform: rotate(-6deg) translateX(-28px) scale(0.85); }
-    .photo-card.stack-peek-left { transform: rotate(-3deg) translateX(-14px) scale(0.93); }
-    .photo-card.stack-peek-right { transform: rotate(3deg) translateX(14px) scale(0.93); }
-    .photo-card.stack-behind-right { transform: rotate(6deg) translateX(28px) scale(0.85); }
+    .photo-showcase { padding: 0 50px; overflow: visible; }
+    .photo-stack { height: 360px; max-width: 240px; overflow: visible; margin: 0 auto; }
+    .photo-card.stack-behind-left { transform: rotate(-6deg) translateX(-22px) scale(0.85); }
+    .photo-card.stack-peek-left { transform: rotate(-3deg) translateX(-11px) scale(0.93); }
+    .photo-card.stack-peek-right { transform: rotate(3deg) translateX(11px) scale(0.93); }
+    .photo-card.stack-behind-right { transform: rotate(6deg) translateX(22px) scale(0.85); }
     .photo-card.stack-hidden { transform: scale(0.65) translateY(30px); }
     .skill-card { padding: 30px 25px; }
     .videos-grid { grid-template-columns: 1fr; gap: 20px; }
@@ -1298,7 +1301,7 @@ section.visible { opacity: 1; transform: translateY(0); }
             <div class="videos-grid">
                 <div class="video-card">
                     <div class="video-wrapper">
-                        <video controls preload="metadata" playsinline webkit-playsinline>
+                        <video controls playsinline webkit-playsinline x5-playsinline preload="metadata" x5-video-player-type="h5" x5-video-player-fullscreen="true">
                             <source src="videos/video1.mp4?v=3" type="video/mp4">
                             您的浏览器不支持视频播放
                         </video>
@@ -1642,15 +1645,20 @@ document.querySelectorAll('.video-wrapper video').forEach(video => {
                 icon.style.background = 'linear-gradient(135deg, #d4a853, #f0c878)';
                 icon.textContent = '⟳';
             }
+            errorEl.classList.add('show');
             errorEl.classList.remove('hide');
         }
     };
     const hideOverlay = () => {
-        if (errorEl) errorEl.classList.add('hide');
+        if (errorEl) {
+            errorEl.classList.remove('show');
+            errorEl.classList.add('hide');
+        }
     };
     video.addEventListener('loadedmetadata', hideOverlay);
     video.addEventListener('canplay', hideOverlay);
     video.addEventListener('playing', hideOverlay);
+    video.addEventListener('play', hideOverlay);
     video.addEventListener('error', () => {
         showMsg('视频加载失败，请检查网络或刷新页面', true);
     });
@@ -1660,11 +1668,9 @@ document.querySelectorAll('.video-wrapper video').forEach(video => {
     video.addEventListener('waiting', () => {
         showMsg('视频缓冲中...', false);
     });
-    setTimeout(() => {
-        if (video.readyState < 1) {
-            showMsg('视频加载较慢，请耐心等待或刷新重试', false);
-        }
-    }, 10000);
+    video.addEventListener('click', () => {
+        video.play().catch(() => {});
+    });
 });
 
 function copyWechat() {
