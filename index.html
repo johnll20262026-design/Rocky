@@ -649,157 +649,177 @@ section { padding: 100px 0; }
 
 .music-control {
     position: fixed;
-    bottom: 40px;
+    bottom: 50px;
     right: 30px;
     z-index: 999;
     display: flex;
     align-items: center;
     gap: 0;
+    animation: gentleFloat 4s ease-in-out infinite;
 }
 .music-btn {
-    width: 54px;
-    height: 54px;
+    width: 56px;
+    height: 56px;
     border-radius: 50%;
-    background: linear-gradient(145deg, rgba(30, 30, 46, 0.95) 0%, rgba(15, 15, 24, 0.95) 100%);
-    backdrop-filter: blur(20px);
-    border: 1.5px solid rgba(212, 168, 83, 0.3);
+    background: linear-gradient(145deg, rgba(30, 30, 46, 0.95) 0%, rgba(15, 15, 24, 0.98) 100%);
+    backdrop-filter: blur(25px);
+    border: 1.5px solid rgba(212, 168, 83, 0.35);
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     padding: 0;
     position: relative;
     box-shadow:
-        0 8px 30px rgba(0, 0, 0, 0.4),
-        0 0 0 0 rgba(212, 168, 83, 0);
+        0 6px 25px rgba(0, 0, 0, 0.45),
+        0 0 0 0 rgba(212, 168, 83, 0),
+        inset 0 1px 1px rgba(255, 255, 255, 0.05);
 }
 .music-btn::before {
     content: '';
     position: absolute;
-    inset: -3px;
+    inset: -4px;
     border-radius: 50%;
-    border: 1px solid rgba(212, 168, 83, 0.1);
+    border: 1px solid rgba(212, 168, 83, 0.15);
+    opacity: 0.6;
+    transition: all 0.5s ease;
+}
+.music-btn::after {
+    content: '';
+    position: absolute;
+    inset: -8px;
+    border-radius: 50%;
+    border: 1px solid rgba(212, 168, 83, 0.08);
     opacity: 0;
-    transition: all 0.4s ease;
+    transition: all 0.5s ease;
 }
 .music-btn:hover {
-    transform: translateY(-3px) scale(1.05);
+    transform: translateY(-4px) scale(1.08);
     border-color: rgba(212, 168, 83, 0.6);
     box-shadow:
-        0 12px 40px rgba(0, 0, 0, 0.5),
-        0 0 25px rgba(212, 168, 83, 0.15);
+        0 15px 45px rgba(0, 0, 0, 0.5),
+        0 0 30px rgba(212, 168, 83, 0.2),
+        inset 0 1px 1px rgba(255, 255, 255, 0.08);
 }
 .music-btn:hover::before {
     opacity: 1;
-    animation: pulseRing 2s ease-out infinite;
+    animation: pulseRing 3s ease-out infinite;
+}
+.music-btn:hover::after {
+    opacity: 1;
+    animation: pulseRing 3s ease-out infinite 0.5s;
 }
 .music-treble {
-    font-size: 26px;
+    font-size: 28px;
     line-height: 1;
     color: var(--accent-gold);
     position: relative;
     z-index: 2;
-    filter: drop-shadow(0 0 8px rgba(212, 168, 83, 0.3));
-    animation: trebleSpin 20s linear infinite;
+    filter: drop-shadow(0 0 6px rgba(212, 168, 83, 0.4));
+    animation: trebleSpin 40s linear infinite;
     transform-origin: center;
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: filter 0.4s ease;
 }
 .music-treble.paused {
     animation-play-state: paused;
+    opacity: 0.8;
 }
 .music-glow {
     position: absolute;
     inset: 0;
     border-radius: 50%;
-    background: radial-gradient(circle at center, rgba(212, 168, 83, 0.15) 0%, transparent 70%);
+    background: radial-gradient(circle at center, rgba(212, 168, 83, 0.12) 0%, transparent 70%);
     opacity: 0;
-    transition: opacity 0.4s ease;
+    transition: opacity 0.5s ease;
 }
 .music-btn.playing .music-glow {
     opacity: 1;
-    animation: glowPulse 2s ease-in-out infinite;
+    animation: glowPulse 3s ease-in-out infinite;
 }
 .music-btn.playing .music-treble {
-    animation-duration: 12s;
-    filter: drop-shadow(0 0 12px rgba(212, 168, 83, 0.5));
+    animation-duration: 25s;
+    filter: drop-shadow(0 0 15px rgba(212, 168, 83, 0.6)) drop-shadow(0 0 25px rgba(212, 168, 83, 0.3));
 }
 .music-note {
     position: absolute;
     color: var(--accent-gold);
     opacity: 0;
-    font-size: 10px;
+    font-size: 11px;
     pointer-events: none;
+    filter: drop-shadow(0 0 4px rgba(212, 168, 83, 0.5));
 }
 .music-btn.playing .music-note:nth-child(1) {
-    animation: noteFloat 2s ease-out infinite;
-    top: 0;
-    right: 0;
-}
-.music-btn.playing .music-note:nth-child(2) {
-    animation: noteFloat 2s ease-out infinite 0.7s;
-    top: 5px;
+    animation: noteFloat 3s ease-out infinite;
+    top: -5px;
     right: 5px;
 }
-.music-btn.playing .music-note:nth-child(3) {
-    animation: noteFloat 2s ease-out infinite 1.4s;
+.music-btn.playing .music-note:nth-child(2) {
+    animation: noteFloat 3s ease-out infinite 1s;
     top: 0;
-    left: 5px;
+    right: -3px;
+}
+.music-btn.playing .music-note:nth-child(3) {
+    animation: noteFloat 3s ease-out infinite 2s;
+    top: -3px;
+    left: 3px;
 }
 .music-hint {
     position: absolute;
-    right: 68px;
+    right: 72px;
     top: 50%;
     transform: translateY(-50%);
-    background: rgba(20, 20, 30, 0.95);
-    backdrop-filter: blur(15px);
-    padding: 7px 14px;
-    border-radius: 20px;
+    background: rgba(20, 20, 30, 0.96);
+    backdrop-filter: blur(20px);
+    padding: 9px 16px;
+    border-radius: 25px;
     font-size: 12px;
     color: var(--text-secondary);
     white-space: nowrap;
     opacity: 0;
     pointer-events: none;
-    transition: all 0.3s ease;
-    border: 1px solid rgba(212, 168, 83, 0.15);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+    transition: all 0.4s ease;
+    border: 1px solid rgba(212, 168, 83, 0.2);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    letter-spacing: 0.3px;
 }
 .music-control:hover .music-hint {
     opacity: 1;
-    transform: translateY(-50%) translateX(-5px);
+    transform: translateY(-50%) translateX(-8px);
 }
 @keyframes trebleSpin {
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
 }
 @keyframes pulseRing {
-    0% { transform: scale(1); opacity: 0.5; }
-    100% { transform: scale(1.3); opacity: 0; }
+    0% { transform: scale(1); opacity: 0.6; }
+    100% { transform: scale(1.4); opacity: 0; }
 }
 @keyframes glowPulse {
-    0%, 100% { opacity: 0.6; }
+    0%, 100% { opacity: 0.5; }
     50% { opacity: 1; }
 }
 @keyframes noteFloat {
     0% {
         opacity: 0;
-        transform: translateY(0) scale(0.5);
+        transform: translateY(0) scale(0.4) rotate(-10deg);
     }
-    20% {
-        opacity: 0.8;
-        transform: translateY(-8px) scale(1);
+    15% {
+        opacity: 0.9;
+        transform: translateY(-5px) scale(1) rotate(0deg);
     }
     100% {
         opacity: 0;
-        transform: translateY(-25px) scale(0.8) rotate(15deg);
+        transform: translateY(-35px) scale(0.6) rotate(20deg);
     }
 }
 @media (max-width: 768px) {
-    .music-control { bottom: 35px; right: 20px; }
-    .music-btn { width: 48px; height: 48px; }
-    .music-treble { width: 24px; height: 24px; }
+    .music-control { bottom: 55px; right: 22px; animation: none; }
+    .music-btn { width: 50px; height: 50px; }
+    .music-treble { font-size: 26px; }
     .music-note { display: none; }
     .music-hint { display: none; }
 }
