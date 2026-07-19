@@ -106,6 +106,26 @@ body {
 }
 .lang-btn.active { color: var(--accent-gold); background: rgba(212, 168, 83, 0.1); }
 .lang-divider { color: var(--text-muted); font-size: 12px; }
+.hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    padding: 8px;
+    z-index: 1001;
+}
+.hamburger span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--text-primary);
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+.hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+.hamburger.active span:nth-child(2) { opacity: 0; }
+.hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+.nav-right { display: flex; align-items: center; gap: 20px; }
 .hero {
     min-height: 100vh;
     display: flex;
@@ -630,8 +650,40 @@ section.visible { opacity: 1; transform: translateY(0); }
 }
 @media (max-width: 768px) {
     .container { padding: 0 20px; }
-    .nav-container { padding: 0 20px; }
-    .nav-links { display: none; }
+    .nav-container { padding: 0 20px; position: relative; }
+    .hamburger { display: flex; }
+    .nav-right { gap: 12px; }
+    .nav-links {
+        position: absolute;
+        top: 70px;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        background: rgba(10, 10, 15, 0.98);
+        backdrop-filter: blur(20px);
+        padding: 20px;
+        gap: 0;
+        border-bottom: 1px solid rgba(212, 168, 83, 0.1);
+        display: flex;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-10px);
+        transition: all 0.3s ease;
+    }
+    .nav-links.open {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+    .nav-link {
+        padding: 15px 0;
+        width: 100%;
+        text-align: center;
+        font-size: 16px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .nav-link:last-child { border-bottom: none; }
+    .nav-link::after { display: none; }
     .info-cards { grid-template-columns: 1fr; }
     .photo-stack { height: 400px; max-width: 320px; }
     .skill-card { padding: 30px 25px; }
@@ -648,7 +700,7 @@ section.visible { opacity: 1; transform: translateY(0); }
                 <span class="logo-mark">R</span>
                 <span class="logo-text">OCKY</span>
             </div>
-            <div class="nav-links">
+            <div class="nav-links" id="navLinks">
                 <a href="#home" class="nav-link active" data-i18n="nav-home">首页</a>
                 <a href="#about" class="nav-link" data-i18n="nav-about">关于</a>
                 <a href="#gallery" class="nav-link" data-i18n="nav-gallery">照片</a>
@@ -656,10 +708,17 @@ section.visible { opacity: 1; transform: translateY(0); }
                 <a href="#contact" class="nav-link" data-i18n="nav-contact">联系</a>
                 <a href="https://ai-tools-guide-ar8.pages.dev/" target="_blank" class="nav-link" data-i18n="nav-support">技术支持</a>
             </div>
-            <div class="lang-switch">
-                <button class="lang-btn active" data-lang="zh" onclick="setLanguage('zh')">中文</button>
-                <span class="lang-divider">|</span>
-                <button class="lang-btn" data-lang="en" onclick="setLanguage('en')">EN</button>
+            <div class="nav-right">
+                <div class="lang-switch">
+                    <button class="lang-btn active" data-lang="zh" onclick="setLanguage('zh')">中文</button>
+                    <span class="lang-divider">|</span>
+                    <button class="lang-btn" data-lang="en" onclick="setLanguage('en')">EN</button>
+                </div>
+                <div class="hamburger" id="hamburger" onclick="toggleMobileMenu()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
             </div>
         </div>
     </nav>
@@ -996,9 +1055,24 @@ function scrollToSection(id) {
     if (el) window.scrollTo({ top: el.offsetTop - 80, behavior: 'smooth' });
 }
 
+function toggleMobileMenu() {
+    const navLinks = document.getElementById('navLinks');
+    const hamburger = document.getElementById('hamburger');
+    navLinks.classList.toggle('open');
+    hamburger.classList.toggle('active');
+}
+
+function closeMobileMenu() {
+    const navLinks = document.getElementById('navLinks');
+    const hamburger = document.getElementById('hamburger');
+    navLinks.classList.remove('open');
+    hamburger.classList.remove('active');
+}
+
 document.querySelectorAll('.nav-link').forEach(link => {
     link.addEventListener('click', e => {
         const href = link.getAttribute('href');
+        closeMobileMenu();
         if (href.startsWith('http')) {
             return;
         }
