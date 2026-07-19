@@ -415,6 +415,9 @@ section { padding: 100px 0; }
 .photo1-bg { background: linear-gradient(135deg, #0f3460 0%, #16213e 50%, #1a1a2e 100%); }
 .photo2-bg { background: linear-gradient(135deg, #4a4a6a 0%, #6b5b73 50%, #2d2d44 100%); }
 .photo3-bg { background: linear-gradient(135deg, #415a77 0%, #1b263b 50%, #0d1b2a 100%); }
+.photo4-bg { background: linear-gradient(135deg, #5c4033 0%, #8b4513 50%, #2d1810 100%); }
+.photo5-bg { background: linear-gradient(135deg, #2d4a3e 0%, #3d6b5c 50%, #1a2e26 100%); }
+.photo6-bg { background: linear-gradient(135deg, #4a3d5c 0%, #6b5c7d 50%, #251d2e 100%); }
 .photo-overlay {
     position: absolute;
     bottom: 0;
@@ -457,6 +460,71 @@ section { padding: 100px 0; }
     transition: all 0.3s ease;
 }
 .dot.active { background: var(--accent-gold); transform: scale(1.2); }
+.videos { background: var(--bg-primary); }
+.videos-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; max-width: 900px; margin: 0 auto; }
+.video-card {
+    background: var(--bg-card);
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.video-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 60px rgba(212, 168, 83, 0.15);
+    border-color: rgba(212, 168, 83, 0.3);
+}
+.video-wrapper {
+    position: relative;
+    width: 100%;
+    padding-top: 56.25%;
+    background: #0a0a0a;
+}
+.video-wrapper video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.video-placeholder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    color: var(--text-muted);
+    gap: 8px;
+    pointer-events: none;
+}
+.video-wrapper video.loaded + .video-placeholder { display: none; }
+.video-wrapper video.error { display: none; }
+.video-placeholder-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent-gold), var(--accent-gold-light));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--bg-primary);
+    font-size: 24px;
+    margin-bottom: 8px;
+}
+.video-placeholder span { font-size: 15px; color: var(--text-secondary); }
+.video-placeholder small { font-size: 12px; opacity: 0.7; }
+.video-info { padding: 20px; }
+.video-caption {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-primary);
+}
 .skills { background: var(--bg-secondary); }
 .skills-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; }
 .skill-card {
@@ -655,10 +723,15 @@ section { padding: 100px 0; }
     display: flex;
     align-items: center;
     gap: 0;
+    animation: musicFloat 5s ease-in-out infinite;
+}
+@keyframes musicFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
 }
 .music-btn {
-    width: 66px;
-    height: 66px;
+    width: 70px;
+    height: 70px;
     border-radius: 50%;
     cursor: pointer;
     display: flex;
@@ -667,120 +740,189 @@ section { padding: 100px 0; }
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     padding: 0;
     position: relative;
-    background: #0a0a0a;
+    background: radial-gradient(circle at center, #1a1510 0%, #080808 100%);
     box-shadow:
-        0 8px 35px rgba(0, 0, 0, 0.6),
-        0 0 0 1px rgba(212, 168, 83, 0.3),
-        0 0 0 3px rgba(20, 20, 20, 0.8),
-        0 0 0 4px rgba(212, 168, 83, 0.2);
-    overflow: hidden;
+        0 10px 40px rgba(0, 0, 0, 0.7),
+        0 0 0 1px rgba(212, 168, 83, 0.35),
+        0 0 0 4px rgba(15, 12, 8, 0.9),
+        0 0 0 5px rgba(212, 168, 83, 0.15),
+        inset 0 2px 4px rgba(255, 220, 150, 0.08),
+        inset 0 -2px 4px rgba(0, 0, 0, 0.5);
+    overflow: visible;
 }
 .music-vinyl {
     position: absolute;
-    inset: 0;
+    inset: 3px;
     border-radius: 50%;
     background:
-        radial-gradient(circle at 30% 30%, rgba(212, 168, 83, 0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 30% 25%, rgba(212, 168, 83, 0.2) 0%, transparent 45%),
+        radial-gradient(ellipse at 70% 75%, rgba(100, 70, 30, 0.1) 0%, transparent 40%),
         repeating-radial-gradient(
             circle at center,
-            #111 0px,
-            #111 1px,
-            #0a0a0a 2px,
-            #0a0a0a 3px
+            #0d0d0d 0px,
+            #0d0d0d 1px,
+            #080808 2px,
+            #080808 3px
         ),
-        linear-gradient(145deg, #1a1a1a 0%, #050505 50%, #151515 100%);
-    animation: vinylSpin 12s linear infinite;
+        linear-gradient(160deg, #1a1a1a 0%, #050505 40%, #0f0d0a 70%, #151210 100%);
+    animation: vinylSpin 18s linear infinite;
     animation-play-state: paused;
+    box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.8);
 }
 .music-vinyl.paused {
     animation-play-state: paused;
 }
 .music-btn.playing .music-vinyl {
     animation-play-state: running;
-    animation-duration: 8s;
+    animation-duration: 10s;
 }
 .music-vinyl-shine {
     position: absolute;
     inset: 0;
     border-radius: 50%;
-    background: linear-gradient(135deg, 
+    background: linear-gradient(125deg, 
         transparent 0%, 
-        transparent 40%, 
-        rgba(212, 168, 83, 0.08) 45%, 
-        rgba(240, 200, 120, 0.12) 50%, 
-        rgba(212, 168, 83, 0.08) 55%, 
-        transparent 60%, 
+        transparent 35%, 
+        rgba(255, 220, 150, 0.03) 42%, 
+        rgba(240, 200, 120, 0.1) 48%, 
+        rgba(255, 220, 150, 0.07) 52%, 
+        rgba(212, 168, 83, 0.04) 55%, 
+        transparent 62%, 
         transparent 100%);
+    pointer-events: none;
+}
+.music-vinyl-edge {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    box-shadow: inset 0 0 0 1px rgba(212, 168, 83, 0.15);
     pointer-events: none;
 }
 .music-label {
     position: absolute;
-    width: 26px;
-    height: 26px;
+    width: 28px;
+    height: 28px;
     border-radius: 50%;
-    background: linear-gradient(145deg, #d4a853 0%, #b8862d 40%, #d4a853 60%, #8b6914 100%);
-    z-index: 2;
+    background: 
+        radial-gradient(circle at 35% 25%, rgba(255, 255, 255, 0.35) 0%, transparent 40%),
+        linear-gradient(145deg, #e8c068 0%, #c99833 25%, #d4a853 50%, #b8862d 75%, #9a7020 100%);
+    z-index: 3;
     box-shadow: 
-        inset 0 1px 2px rgba(255, 255, 255, 0.4),
-        inset 0 -1px 2px rgba(0, 0, 0, 0.3),
-        0 0 10px rgba(212, 168, 83, 0.3);
+        inset 0 1px 3px rgba(255, 255, 255, 0.5),
+        inset 0 -2px 3px rgba(0, 0, 0, 0.4),
+        0 0 8px rgba(212, 168, 83, 0.4),
+        0 1px 3px rgba(0, 0, 0, 0.5);
     display: flex;
     align-items: center;
     justify-content: center;
 }
 .music-label::before {
     content: '';
-    width: 6px;
-    height: 6px;
+    width: 7px;
+    height: 7px;
     border-radius: 50%;
-    background: #0a0a0a;
-    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.8);
+    background: radial-gradient(circle at 35% 35%, #333 0%, #0a0a0a 60%);
+    box-shadow: 
+        inset 0 1px 2px rgba(0, 0, 0, 0.9),
+        0 0 0 1px rgba(212, 168, 83, 0.3);
 }
-.music-label-ring {
+.music-label-ring-1 {
     position: absolute;
-    width: 34px;
-    height: 34px;
+    width: 38px;
+    height: 38px;
     border-radius: 50%;
-    border: 1px solid rgba(212, 168, 83, 0.3);
-    z-index: 1;
+    border: 1px solid rgba(212, 168, 83, 0.2);
+    z-index: 2;
 }
-.music-grooves {
+.music-label-ring-2 {
     position: absolute;
-    inset: 8px;
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
     border: 1px solid rgba(255, 255, 255, 0.03);
+    z-index: 1;
+}
+.music-tonearm {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    top: -12px;
+    left: -12px;
+    z-index: 4;
+    transform-origin: 18px 18px;
+    transform: rotate(-25deg);
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
     pointer-events: none;
 }
-.music-grooves::before {
-    content: '';
-    position: absolute;
-    inset: 6px;
-    border-radius: 50%;
-    border: 1px solid rgba(255, 255, 255, 0.02);
+.music-btn.playing .music-tonearm {
+    transform: rotate(-8deg);
 }
-.music-grooves::after {
+.music-tonearm-base {
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    top: 9px;
+    left: 9px;
+    border-radius: 50%;
+    background: linear-gradient(145deg, #2a2a2a 0%, #111 50%, #1a1a1a 100%);
+    box-shadow: 
+        inset 0 1px 2px rgba(255, 255, 255, 0.15),
+        inset 0 -1px 2px rgba(0, 0, 0, 0.5),
+        0 1px 3px rgba(0, 0, 0, 0.5);
+}
+.music-tonearm-base::before {
     content: '';
     position: absolute;
-    inset: 12px;
+    width: 8px;
+    height: 8px;
+    top: 5px;
+    left: 5px;
     border-radius: 50%;
-    border: 1px solid rgba(255, 255, 255, 0.02);
+    background: linear-gradient(145deg, #d4a853 0%, #8b6914 100%);
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.3);
+}
+.music-tonearm-arm {
+    position: absolute;
+    width: 3px;
+    height: 38px;
+    top: 12px;
+    left: 17px;
+    background: linear-gradient(90deg, #888 0%, #ccc 30%, #aaa 60%, #666 100%);
+    border-radius: 2px;
+    transform-origin: top center;
+    transform: rotate(15deg);
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
+}
+.music-tonearm-head {
+    position: absolute;
+    width: 10px;
+    height: 14px;
+    bottom: -5px;
+    left: -3px;
+    background: linear-gradient(145deg, #2a2a2a 0%, #111 100%);
+    border-radius: 2px 2px 4px 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 .music-btn:hover {
-    transform: translateY(-3px) scale(1.06);
+    transform: translateY(-4px) scale(1.05);
     box-shadow:
-        0 15px 45px rgba(0, 0, 0, 0.7),
-        0 0 0 1px rgba(212, 168, 83, 0.5),
-        0 0 0 3px rgba(20, 20, 20, 0.9),
-        0 0 0 4px rgba(212, 168, 83, 0.3),
-        0 0 30px rgba(212, 168, 83, 0.15);
+        0 18px 50px rgba(0, 0, 0, 0.75),
+        0 0 0 1px rgba(212, 168, 83, 0.55),
+        0 0 0 4px rgba(15, 12, 8, 0.95),
+        0 0 0 5px rgba(212, 168, 83, 0.25),
+        0 0 35px rgba(212, 168, 83, 0.15),
+        inset 0 2px 4px rgba(255, 220, 150, 0.1),
+        inset 0 -2px 4px rgba(0, 0, 0, 0.5);
 }
 .music-btn.playing {
     box-shadow:
-        0 10px 40px rgba(0, 0, 0, 0.65),
+        0 12px 45px rgba(0, 0, 0, 0.7),
         0 0 0 1px rgba(212, 168, 83, 0.5),
-        0 0 0 3px rgba(20, 20, 20, 0.9),
-        0 0 0 4px rgba(212, 168, 83, 0.35),
-        0 0 25px rgba(212, 168, 83, 0.2);
+        0 0 0 4px rgba(15, 12, 8, 0.95),
+        0 0 0 5px rgba(212, 168, 83, 0.25),
+        0 0 30px rgba(212, 168, 83, 0.2),
+        inset 0 2px 4px rgba(255, 220, 150, 0.08),
+        inset 0 -2px 4px rgba(0, 0, 0, 0.5);
 }
 .music-note {
     position: absolute;
@@ -789,29 +931,29 @@ section { padding: 100px 0; }
     font-size: 11px;
     pointer-events: none;
     filter: drop-shadow(0 0 4px rgba(212, 168, 83, 0.5));
-    z-index: 3;
+    z-index: 5;
 }
 .music-btn.playing .music-note:nth-child(1) {
     animation: noteFloat 3.5s ease-out infinite;
-    top: -2px;
-    right: 5px;
+    top: -5px;
+    right: 8px;
 }
 .music-btn.playing .music-note:nth-child(2) {
     animation: noteFloat 3.5s ease-out infinite 1.2s;
-    top: 3px;
-    right: -2px;
+    top: 0;
+    right: 0;
 }
 .music-btn.playing .music-note:nth-child(3) {
     animation: noteFloat 3.5s ease-out infinite 2.4s;
-    top: 0;
-    left: 5px;
+    top: -3px;
+    left: 8px;
 }
 .music-hint {
     position: absolute;
-    right: 82px;
+    right: 88px;
     top: 50%;
     transform: translateY(-50%);
-    background: rgba(20, 20, 30, 0.96);
+    background: rgba(20, 18, 15, 0.96);
     backdrop-filter: blur(20px);
     padding: 10px 18px;
     border-radius: 25px;
@@ -822,7 +964,7 @@ section { padding: 100px 0; }
     pointer-events: none;
     transition: all 0.4s ease;
     border: 1px solid rgba(212, 168, 83, 0.2);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
     letter-spacing: 0.3px;
 }
 .music-control:hover .music-hint {
@@ -839,19 +981,25 @@ section { padding: 100px 0; }
         transform: translateY(0) scale(0.5) rotate(-8deg);
     }
     15% {
-        opacity: 0.8;
-        transform: translateY(-8px) scale(1) rotate(0deg);
+        opacity: 0.85;
+        transform: translateY(-10px) scale(1) rotate(0deg);
     }
     100% {
         opacity: 0;
-        transform: translateY(-35px) scale(0.5) rotate(15deg);
+        transform: translateY(-40px) scale(0.5) rotate(15deg);
     }
 }
 @media (max-width: 768px) {
-    .music-control { bottom: 55px; right: 22px; }
-    .music-btn { width: 58px; height: 58px; }
-    .music-label { width: 22px; height: 22px; }
-    .music-label-ring { width: 30px; height: 30px; }
+    .music-control { bottom: 55px; right: 22px; animation: none; }
+    .music-btn { width: 60px; height: 60px; }
+    .music-label { width: 24px; height: 24px; }
+    .music-label::before { width: 6px; height: 6px; }
+    .music-label-ring-1 { width: 32px; height: 32px; }
+    .music-label-ring-2 { width: 40px; height: 40px; }
+    .music-tonearm { width: 40px; height: 40px; top: -8px; left: -8px; transform-origin: 15px 15px; }
+    .music-tonearm-base { width: 15px; height: 15px; top: 7px; left: 7px; }
+    .music-tonearm-base::before { width: 6px; height: 6px; top: 4px; left: 4px; }
+    .music-tonearm-arm { height: 32px; top: 10px; left: 14px; }
     .music-note { display: none; }
     .music-hint { display: none; }
 }
@@ -917,6 +1065,7 @@ section.visible { opacity: 1; transform: translateY(0); }
     .info-cards { grid-template-columns: 1fr; }
     .photo-stack { height: 400px; max-width: 320px; }
     .skill-card { padding: 30px 25px; }
+    .videos-grid { grid-template-columns: 1fr; gap: 20px; }
     .contact-text h3 { font-size: 24px; }
     .wechat-qr-wrapper { width: 230px; }
 }
@@ -934,6 +1083,7 @@ section.visible { opacity: 1; transform: translateY(0); }
                 <a href="#home" class="nav-link active" data-i18n="nav-home">首页</a>
                 <a href="#about" class="nav-link" data-i18n="nav-about">关于</a>
                 <a href="#gallery" class="nav-link" data-i18n="nav-gallery">照片</a>
+                <a href="#videos" class="nav-link" data-i18n="nav-videos">视频</a>
                 <a href="#skills" class="nav-link" data-i18n="nav-skills">特长</a>
                 <a href="#contact" class="nav-link" data-i18n="nav-contact">联系</a>
                 <a href="https://ai-tools-guide-ar8.pages.dev/" target="_blank" class="nav-link" data-i18n="nav-support">技术支持</a>
@@ -1082,15 +1232,54 @@ section.visible { opacity: 1; transform: translateY(0); }
                             </div>
                         </div>
                     </div>
+                    <div class="photo-card photo-4" data-index="3" onclick="showPhoto(3)">
+                        <div class="photo-inner">
+                            <img src="images/photo4.jpg" alt="Photo 4" onerror="this.style.display='none';this.parentElement.classList.add('photo4-bg')">
+                            <div class="photo-placeholder" id="ph4" style="display:none">
+                                <span>📷</span>
+                                <span>photo4.jpg</span>
+                            </div>
+                            <div class="photo-overlay">
+                                <span class="photo-caption" data-i18n="photo4-caption">音乐时光，旋律相伴</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="photo-card photo-5" data-index="4" onclick="showPhoto(4)">
+                        <div class="photo-inner">
+                            <img src="images/photo5.jpg" alt="Photo 5" onerror="this.style.display='none';this.parentElement.classList.add('photo5-bg')">
+                            <div class="photo-placeholder" id="ph5" style="display:none">
+                                <span>📷</span>
+                                <span>photo5.jpg</span>
+                            </div>
+                            <div class="photo-overlay">
+                                <span class="photo-caption" data-i18n="photo5-caption">精彩瞬间，记录生活</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="photo-card photo-6" data-index="5" onclick="showPhoto(5)">
+                        <div class="photo-inner">
+                            <img src="images/photo6.jpg" alt="Photo 6" onerror="this.style.display='none';this.parentElement.classList.add('photo6-bg')">
+                            <div class="photo-placeholder" id="ph6" style="display:none">
+                                <span>📷</span>
+                                <span>photo6.jpg</span>
+                            </div>
+                            <div class="photo-overlay">
+                                <span class="photo-caption" data-i18n="photo6-caption">美好时刻，永恒记忆</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="photo-controls">
                     <button class="photo-nav" onclick="prevPhoto()">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
                     </button>
-                    <div class="photo-dots">
+                    <div class="photo-dots" id="photoDots">
                         <span class="dot" data-index="0" onclick="showPhoto(0)"></span>
                         <span class="dot" data-index="1" onclick="showPhoto(1)"></span>
                         <span class="dot active" data-index="2" onclick="showPhoto(2)"></span>
+                        <span class="dot" data-index="3" onclick="showPhoto(3)"></span>
+                        <span class="dot" data-index="4" onclick="showPhoto(4)"></span>
+                        <span class="dot" data-index="5" onclick="showPhoto(5)"></span>
                     </div>
                     <button class="photo-nav" onclick="nextPhoto()">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
@@ -1100,10 +1289,52 @@ section.visible { opacity: 1; transform: translateY(0); }
         </div>
     </section>
 
-    <section id="skills" class="skills">
+    <section id="videos" class="videos">
         <div class="container">
             <div class="section-header">
                 <span class="section-number">03</span>
+                <h2 class="section-title" data-i18n="videos-title">视频记录</h2>
+                <div class="section-line"></div>
+            </div>
+            <div class="videos-grid">
+                <div class="video-card">
+                    <div class="video-wrapper">
+                        <video controls preload="metadata" poster="images/photo4.jpg">
+                            <source src="videos/video1.mp4" type="video/mp4">
+                        </video>
+                        <div class="video-placeholder">
+                            <div class="video-placeholder-icon">▶</div>
+                            <span>video1.mp4</span>
+                            <small>请将视频文件放入 videos 文件夹</small>
+                        </div>
+                    </div>
+                    <div class="video-info">
+                        <span class="video-caption" data-i18n="video1-caption">吉他演奏片段</span>
+                    </div>
+                </div>
+                <div class="video-card">
+                    <div class="video-wrapper">
+                        <video controls preload="metadata" poster="images/photo5.jpg">
+                            <source src="videos/video2.mp4" type="video/mp4">
+                        </video>
+                        <div class="video-placeholder">
+                            <div class="video-placeholder-icon">▶</div>
+                            <span>video2.mp4</span>
+                            <small>请将视频文件放入 videos 文件夹</small>
+                        </div>
+                    </div>
+                    <div class="video-info">
+                        <span class="video-caption" data-i18n="video2-caption">生活记录片段</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="skills" class="skills">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-number">04</span>
                 <h2 class="section-title" data-i18n="skills-title">我的特长</h2>
                 <div class="section-line"></div>
             </div>
@@ -1167,7 +1398,7 @@ section.visible { opacity: 1; transform: translateY(0); }
     <section id="contact" class="contact">
         <div class="container">
             <div class="section-header">
-                <span class="section-number">04</span>
+                <span class="section-number">05</span>
                 <h2 class="section-title" data-i18n="contact-title">联系我</h2>
                 <div class="section-line"></div>
             </div>
@@ -1240,10 +1471,17 @@ section.visible { opacity: 1; transform: translateY(0); }
         <button class="music-btn" id="musicBtn" onclick="toggleMusic()">
             <div class="music-vinyl paused" id="musicVinyl">
                 <div class="music-vinyl-shine"></div>
-                <div class="music-grooves"></div>
+                <div class="music-vinyl-edge"></div>
             </div>
-            <div class="music-label-ring"></div>
+            <div class="music-label-ring-2"></div>
+            <div class="music-label-ring-1"></div>
             <div class="music-label"></div>
+            <div class="music-tonearm" id="musicTonearm">
+                <div class="music-tonearm-base"></div>
+                <div class="music-tonearm-arm">
+                    <div class="music-tonearm-head"></div>
+                </div>
+            </div>
             <span class="music-note">♪</span>
             <span class="music-note">♫</span>
             <span class="music-note">♪</span>
@@ -1258,13 +1496,14 @@ section.visible { opacity: 1; transform: translateY(0); }
     <script>
 const i18n = {
     zh: {
-        'nav-home': '首页','nav-about': '关于','nav-gallery': '照片','nav-skills': '特长','nav-contact': '联系','nav-support': '技术支持',
+        'nav-home': '首页','nav-about': '关于','nav-gallery': '照片','nav-videos': '视频','nav-skills': '特长','nav-contact': '联系','nav-support': '技术支持',
         'hero-tag': '武汉 · 中国','hero-title-1': '你好，我是','hero-subtitle': '财务人 · 吉他手 · 生活探索者',
         'hero-desc': '在数字与音符之间寻找平衡，用理性与感性诠释生活','cta-explore': '了解更多',
         'about-title': '关于我','about-intro': '一个在财务世界里严谨计算，在音乐世界里自由燃烧的人。白天与数字、报表打交道，夜晚抱起吉他，让旋律说话。',
         'info-location': '地区','info-job': '职业','info-job-value': '财务专业人士','info-music': '音乐特长','info-music-value': '电吉他 · 木吉他',
         'info-status': '状态','info-status-value': '未婚','about-quote': '音乐是我灵魂的语言，财务是我生活的根基。在理性与感性之间，我找到了属于自己的节奏。',
-        'gallery-title': '照片墙','photo1-caption': '山河之间，摇滚不止','photo2-caption': '静谧时光，思考人生','photo3-caption': '展翅高飞，自由翱翔',
+        'gallery-title': '照片墙','photo1-caption': '山河之间，摇滚不止','photo2-caption': '静谧时光，思考人生','photo3-caption': '展翅高飞，自由翱翔','photo4-caption': '音乐时光，旋律相伴','photo5-caption': '精彩瞬间，记录生活','photo6-caption': '美好时刻，永恒记忆',
+        'videos-title': '视频记录','video1-caption': '吉他演奏片段','video2-caption': '生活记录片段',
         'skills-title': '我的特长','skill-music-title': '音乐 · 吉他','skill-music-desc': '精通电吉他与木吉他演奏，从摇滚到民谣，用六根弦讲述故事。音乐是生命中不可或缺的部分，每一个音符都是情感的释放。',
         'skill-finance-title': '财务 · 专业','skill-finance-desc': '财务专业背景，具备严谨的逻辑思维和数据分析能力。在数字的世界里保持清醒，用专业的态度处理每一个数据。',
         'contact-title': '联系我','contact-heading': '期待与你相识','contact-desc': '无论是聊音乐、聊财务，还是分享生活，都欢迎添加我的微信。让我们一起创造更多可能！',
@@ -1273,13 +1512,14 @@ const i18n = {
         'footer-text': '用音乐表达，用专业证明 © 2024 Rocky'
     },
     en: {
-        'nav-home': 'Home','nav-about': 'About','nav-gallery': 'Photos','nav-skills': 'Skills','nav-contact': 'Contact','nav-support': 'Support',
+        'nav-home': 'Home','nav-about': 'About','nav-gallery': 'Photos','nav-videos': 'Videos','nav-skills': 'Skills','nav-contact': 'Contact','nav-support': 'Support',
         'hero-tag': 'Wuhan · China','hero-title-1': "Hi, I'm",'hero-subtitle': 'Finance · Guitarist · Explorer',
         'hero-desc': 'Finding balance between numbers and notes','cta-explore': 'Learn More',
         'about-title': 'About Me','about-intro': 'Calculating rigorously in finance, burning freely in music. Working with numbers by day, letting melodies speak at night.',
         'info-location': 'Location','info-job': 'Profession','info-job-value': 'Finance Professional','info-music': 'Music','info-music-value': 'Electric & Acoustic Guitar',
         'info-status': 'Status','info-status-value': 'Single','about-quote': 'Music is the language of my soul, finance is my foundation. Between reason and passion, I found my rhythm.',
-        'gallery-title': 'Gallery','photo1-caption': 'Between mountains and rivers','photo2-caption': 'Quiet moments','photo3-caption': 'Spread wings and soar',
+        'gallery-title': 'Gallery','photo1-caption': 'Between mountains and rivers','photo2-caption': 'Quiet moments','photo3-caption': 'Spread wings and soar','photo4-caption': 'Music time with melody','photo5-caption': 'Wonderful moments in life','photo6-caption': 'Beautiful memories forever',
+        'videos-title': 'Videos','video1-caption': 'Guitar Performance','video2-caption': 'Life Moments',
         'skills-title': 'My Skills','skill-music-title': 'Music · Guitar','skill-music-desc': 'Proficient in electric and acoustic guitar, telling stories through six strings.',
         'skill-finance-title': 'Finance · Professional','skill-finance-desc': 'Finance professional with rigorous analytical thinking and data capabilities.',
         'contact-title': 'Contact Me','contact-heading': 'Looking Forward to Meeting You','contact-desc': "Whether it's music, finance, or life, feel free to add me on WeChat!",
@@ -1392,10 +1632,15 @@ function showPhoto(index) {
     document.querySelectorAll('.photo-card').forEach((c, i) => c.classList.toggle('active', i === index));
     document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === index));
 }
-function nextPhoto() { showPhoto((currentPhotoIndex + 1) % 3); }
-function prevPhoto() { showPhoto((currentPhotoIndex - 1 + 3) % 3); }
+function nextPhoto() { showPhoto((currentPhotoIndex + 1) % 6); }
+function prevPhoto() { showPhoto((currentPhotoIndex - 1 + 6) % 6); }
 
 setInterval(() => { nextPhoto(); }, 5000);
+
+document.querySelectorAll('.video-wrapper video').forEach(video => {
+    video.addEventListener('loadeddata', () => video.classList.add('loaded'));
+    video.addEventListener('error', () => video.classList.add('error'));
+});
 
 function copyWechat() {
     const id = document.getElementById('wechatId').textContent;
