@@ -18,8 +18,8 @@
     --accent-blue: #4a90d9;
     --accent-blue-light: #67b8de;
     --gradient-gold: linear-gradient(135deg, #d4a853 0%, #f0c878 100%);
-    --font-display: 'Playfair Display', Georgia, serif;
-    --font-body: 'Noto Sans SC', 'Microsoft YaHei', sans-serif;
+    --font-display: Georgia, 'Times New Roman', 'SimSun', serif;
+    --font-body: 'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', 'Helvetica Neue', Arial, sans-serif;
 }
 html { scroll-behavior: smooth; }
 body {
@@ -375,12 +375,17 @@ section { padding: 100px 0; }
     flex-direction: column;
     align-items: center;
     gap: 30px;
+    width: 100%;
+    overflow: visible;
+    padding: 0 50px;
+    box-sizing: border-box;
 }
 .photo-stack {
     position: relative;
     width: 100%;
-    max-width: 450px;
-    height: 520px;
+    max-width: 400px;
+    height: 500px;
+    overflow: visible;
 }
 .photo-card {
     position: absolute;
@@ -1068,14 +1073,19 @@ section.visible { opacity: 1; transform: translateY(0); }
     .nav-link:last-child { border-bottom: none; }
     .nav-link::after { display: none; }
     .info-cards { grid-template-columns: 1fr; }
-    .photo-stack { height: 400px; max-width: 320px; }
+    .photo-showcase { padding: 0 30px; }
+    .photo-stack { height: 380px; max-width: 280px; }
+    .photo-card.stack-behind-left { transform: rotate(-6deg) translateX(-28px) scale(0.85); }
+    .photo-card.stack-peek-left { transform: rotate(-3deg) translateX(-14px) scale(0.93); }
+    .photo-card.stack-peek-right { transform: rotate(3deg) translateX(14px) scale(0.93); }
+    .photo-card.stack-behind-right { transform: rotate(6deg) translateX(28px) scale(0.85); }
+    .photo-card.stack-hidden { transform: scale(0.65) translateY(30px); }
     .skill-card { padding: 30px 25px; }
     .videos-grid { grid-template-columns: 1fr; gap: 20px; }
     .contact-text h3 { font-size: 24px; }
     .wechat-qr-wrapper { width: 230px; }
 }
     </style>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <nav class="navbar" id="navbar">
@@ -1203,7 +1213,7 @@ section.visible { opacity: 1; transform: translateY(0); }
                 <div class="photo-stack" id="photoStack">
                     <div class="photo-card" data-index="0" onclick="showPhoto(0)">
                         <div class="photo-inner">
-                            <img src="images/photo1.jpg" alt="Photo 1" onerror="this.style.display='none';this.parentElement.classList.add('photo1-bg')">
+                            <img loading="lazy" decoding="async" src="images/photo1.jpg" alt="Photo 1" onerror="this.style.display='none';this.parentElement.classList.add('photo1-bg')">
                             <div class="photo-placeholder" id="ph1" style="display:none">
                                 <span>📷</span>
                                 <span>photo1.jpg</span>
@@ -1215,7 +1225,7 @@ section.visible { opacity: 1; transform: translateY(0); }
                     </div>
                     <div class="photo-card" data-index="1" onclick="showPhoto(1)">
                         <div class="photo-inner">
-                            <img src="images/photo2.jpg" alt="Photo 2" onerror="this.style.display='none';this.parentElement.classList.add('photo2-bg')">
+                            <img loading="lazy" decoding="async" src="images/photo2.jpg" alt="Photo 2" onerror="this.style.display='none';this.parentElement.classList.add('photo2-bg')">
                             <div class="photo-placeholder" id="ph2" style="display:none">
                                 <span>📷</span>
                                 <span>photo2.jpg</span>
@@ -1227,7 +1237,7 @@ section.visible { opacity: 1; transform: translateY(0); }
                     </div>
                     <div class="photo-card" data-index="2" onclick="showPhoto(2)">
                         <div class="photo-inner">
-                            <img src="images/photo3.jpg" alt="Photo 3" onerror="this.style.display='none';this.parentElement.classList.add('photo3-bg')">
+                            <img loading="lazy" decoding="async" src="images/photo3.jpg" alt="Photo 3" onerror="this.style.display='none';this.parentElement.classList.add('photo3-bg')">
                             <div class="photo-placeholder" id="ph3" style="display:none">
                                 <span>📷</span>
                                 <span>photo3.jpg</span>
@@ -1239,7 +1249,7 @@ section.visible { opacity: 1; transform: translateY(0); }
                     </div>
                     <div class="photo-card" data-index="3" onclick="showPhoto(3)">
                         <div class="photo-inner">
-                            <img src="images/photo4.jpg" alt="Photo 4" onerror="this.style.display='none';this.parentElement.classList.add('photo4-bg')">
+                            <img loading="lazy" decoding="async" src="images/photo4.jpg" alt="Photo 4" onerror="this.style.display='none';this.parentElement.classList.add('photo4-bg')">
                             <div class="photo-placeholder" id="ph4" style="display:none">
                                 <span>📷</span>
                                 <span>photo4.jpg</span>
@@ -1251,7 +1261,7 @@ section.visible { opacity: 1; transform: translateY(0); }
                     </div>
                     <div class="photo-card" data-index="4" onclick="showPhoto(4)">
                         <div class="photo-inner">
-                            <img src="images/photo5.jpg" alt="Photo 5" onerror="this.style.display='none';this.parentElement.classList.add('photo5-bg')">
+                            <img loading="lazy" decoding="async" src="images/photo5.jpg" alt="Photo 5" onerror="this.style.display='none';this.parentElement.classList.add('photo5-bg')">
                             <div class="photo-placeholder" id="ph5" style="display:none">
                                 <span>📷</span>
                                 <span>photo5.jpg</span>
@@ -1263,7 +1273,7 @@ section.visible { opacity: 1; transform: translateY(0); }
                     </div>
                     <div class="photo-card" data-index="5" onclick="showPhoto(5)">
                         <div class="photo-inner">
-                            <img src="images/photo6.jpg" alt="Photo 6" onerror="this.style.display='none';this.parentElement.classList.add('photo6-bg')">
+                            <img loading="lazy" decoding="async" src="images/photo6.jpg" alt="Photo 6" onerror="this.style.display='none';this.parentElement.classList.add('photo6-bg')">
                             <div class="photo-placeholder" id="ph6" style="display:none">
                                 <span>📷</span>
                                 <span>photo6.jpg</span>
@@ -1304,7 +1314,7 @@ section.visible { opacity: 1; transform: translateY(0); }
             <div class="videos-grid">
                 <div class="video-card">
                     <div class="video-wrapper">
-                        <video controls preload="metadata" playsinline>
+                        <video controls preload="none" playsinline>
                             <source src="videos/video1.mp4" type="video/mp4">
                         </video>
                         <div class="video-error" id="videoError">
@@ -1398,7 +1408,7 @@ section.visible { opacity: 1; transform: translateY(0); }
                 </div>
                 <div class="wechat-card">
                     <div class="wechat-qr-wrapper">
-                        <img class="wechat-qr-img" src="images/wechat-qr.png" alt="微信二维码" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                        <img class="wechat-qr-img" loading="lazy" decoding="async" src="images/wechat-qr.png" alt="微信二维码" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
                         <div class="wechat-qr-placeholder" style="display:none;">
                             <div class="qr-pattern">
                                 <svg viewBox="0 0 100 100" fill="currentColor">
@@ -1476,7 +1486,7 @@ section.visible { opacity: 1; transform: translateY(0); }
             <span class="music-note">♪</span>
         </button>
     </div>
-    <audio id="bgMusic" loop preload="auto" volume="0.4">
+    <audio id="bgMusic" loop preload="none">
         <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3" type="audio/mpeg">
     </audio>
 
@@ -1581,6 +1591,7 @@ function toggleMusic() {
         isMusicPlaying = false;
         updateMusicUI(false);
     } else {
+        bgMusic.volume = 0.4;
         bgMusic.play().then(() => {
             isMusicPlaying = true;
             updateMusicUI(true);
@@ -1593,6 +1604,7 @@ function toggleMusic() {
 function tryAutoPlay() {
     if (hasTriedAutoplay) return;
     hasTriedAutoplay = true;
+    bgMusic.volume = 0.4;
     bgMusic.play().then(() => {
         isMusicPlaying = true;
         updateMusicUI(true);
