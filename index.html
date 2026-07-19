@@ -391,6 +391,8 @@ section { padding: 100px 0; }
     cursor: pointer;
     transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    pointer-events: none;
 }
 .photo-inner {
     width: 100%;
@@ -431,10 +433,12 @@ section { padding: 100px 0; }
 }
 .photo-card:hover .photo-overlay { transform: translateY(0); opacity: 1; }
 .photo-caption { color: white; font-size: 16px; font-weight: 500; }
-.photo-1 { transform: rotate(-8deg) translateX(-30px) scale(0.9); z-index: 1; }
-.photo-2 { transform: rotate(5deg) translateX(30px) scale(0.95); z-index: 2; }
-.photo-3 { transform: rotate(-2deg) translateX(0) scale(1); z-index: 3; }
-.photo-card.active { z-index: 10 !important; transform: rotate(0) translateX(0) scale(1) !important; }
+.photo-card.stack-prev-2 { transform: rotate(-6deg) translateX(-40px) scale(0.82); z-index: 1; opacity: 0.6; pointer-events: none; }
+.photo-card.stack-prev-1 { transform: rotate(5deg) translateX(-20px) scale(0.88); z-index: 2; opacity: 0.8; pointer-events: none; }
+.photo-card.stack-active { transform: rotate(0deg) translateX(0) scale(1); z-index: 10; opacity: 1; pointer-events: auto; }
+.photo-card.stack-next-1 { transform: rotate(-4deg) translateX(20px) scale(0.88); z-index: 2; opacity: 0.8; pointer-events: none; }
+.photo-card.stack-next-2 { transform: rotate(6deg) translateX(40px) scale(0.82); z-index: 1; opacity: 0.6; pointer-events: none; }
+.photo-card.stack-next-3 { transform: rotate(-3deg) translateX(50px) scale(0.76); z-index: 0; opacity: 0.3; pointer-events: none; }
 .photo-controls { display: flex; align-items: center; gap: 25px; }
 .photo-nav {
     width: 45px;
@@ -461,7 +465,7 @@ section { padding: 100px 0; }
 }
 .dot.active { background: var(--accent-gold); transform: scale(1.2); }
 .videos { background: var(--bg-primary); }
-.videos-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; max-width: 900px; margin: 0 auto; }
+.videos-grid { display: grid; grid-template-columns: 1fr; gap: 30px; max-width: 600px; margin: 0 auto; }
 .video-card {
     background: var(--bg-card);
     border-radius: 16px;
@@ -1196,7 +1200,7 @@ section.visible { opacity: 1; transform: translateY(0); }
             </div>
             <div class="photo-showcase">
                 <div class="photo-stack" id="photoStack">
-                    <div class="photo-card photo-1" data-index="0" onclick="showPhoto(0)">
+                    <div class="photo-card" data-index="0" onclick="showPhoto(0)">
                         <div class="photo-inner">
                             <img src="images/photo1.jpg" alt="Photo 1" onerror="this.style.display='none';this.parentElement.classList.add('photo1-bg')">
                             <div class="photo-placeholder" id="ph1" style="display:none">
@@ -1208,7 +1212,7 @@ section.visible { opacity: 1; transform: translateY(0); }
                             </div>
                         </div>
                     </div>
-                    <div class="photo-card photo-2" data-index="1" onclick="showPhoto(1)">
+                    <div class="photo-card" data-index="1" onclick="showPhoto(1)">
                         <div class="photo-inner">
                             <img src="images/photo2.jpg" alt="Photo 2" onerror="this.style.display='none';this.parentElement.classList.add('photo2-bg')">
                             <div class="photo-placeholder" id="ph2" style="display:none">
@@ -1220,7 +1224,7 @@ section.visible { opacity: 1; transform: translateY(0); }
                             </div>
                         </div>
                     </div>
-                    <div class="photo-card photo-3 active" data-index="2" onclick="showPhoto(2)">
+                    <div class="photo-card" data-index="2" onclick="showPhoto(2)">
                         <div class="photo-inner">
                             <img src="images/photo3.jpg" alt="Photo 3" onerror="this.style.display='none';this.parentElement.classList.add('photo3-bg')">
                             <div class="photo-placeholder" id="ph3" style="display:none">
@@ -1232,7 +1236,7 @@ section.visible { opacity: 1; transform: translateY(0); }
                             </div>
                         </div>
                     </div>
-                    <div class="photo-card photo-4" data-index="3" onclick="showPhoto(3)">
+                    <div class="photo-card" data-index="3" onclick="showPhoto(3)">
                         <div class="photo-inner">
                             <img src="images/photo4.jpg" alt="Photo 4" onerror="this.style.display='none';this.parentElement.classList.add('photo4-bg')">
                             <div class="photo-placeholder" id="ph4" style="display:none">
@@ -1244,7 +1248,7 @@ section.visible { opacity: 1; transform: translateY(0); }
                             </div>
                         </div>
                     </div>
-                    <div class="photo-card photo-5" data-index="4" onclick="showPhoto(4)">
+                    <div class="photo-card" data-index="4" onclick="showPhoto(4)">
                         <div class="photo-inner">
                             <img src="images/photo5.jpg" alt="Photo 5" onerror="this.style.display='none';this.parentElement.classList.add('photo5-bg')">
                             <div class="photo-placeholder" id="ph5" style="display:none">
@@ -1256,7 +1260,7 @@ section.visible { opacity: 1; transform: translateY(0); }
                             </div>
                         </div>
                     </div>
-                    <div class="photo-card photo-6" data-index="5" onclick="showPhoto(5)">
+                    <div class="photo-card" data-index="5" onclick="showPhoto(5)">
                         <div class="photo-inner">
                             <img src="images/photo6.jpg" alt="Photo 6" onerror="this.style.display='none';this.parentElement.classList.add('photo6-bg')">
                             <div class="photo-placeholder" id="ph6" style="display:none">
@@ -1305,26 +1309,11 @@ section.visible { opacity: 1; transform: translateY(0); }
                         <div class="video-placeholder">
                             <div class="video-placeholder-icon">▶</div>
                             <span>video1.mp4</span>
-                            <small>请将视频文件放入 videos 文件夹</small>
+                            <small>视频加载中...</small>
                         </div>
                     </div>
                     <div class="video-info">
                         <span class="video-caption" data-i18n="video1-caption">吉他演奏片段</span>
-                    </div>
-                </div>
-                <div class="video-card">
-                    <div class="video-wrapper">
-                        <video controls preload="metadata" poster="images/photo5.jpg">
-                            <source src="videos/video2.mp4" type="video/mp4">
-                        </video>
-                        <div class="video-placeholder">
-                            <div class="video-placeholder-icon">▶</div>
-                            <span>video2.mp4</span>
-                            <small>请将视频文件放入 videos 文件夹</small>
-                        </div>
-                    </div>
-                    <div class="video-info">
-                        <span class="video-caption" data-i18n="video2-caption">生活记录片段</span>
                     </div>
                 </div>
             </div>
@@ -1503,7 +1492,7 @@ const i18n = {
         'info-location': '地区','info-job': '职业','info-job-value': '财务专业人士','info-music': '音乐特长','info-music-value': '电吉他 · 木吉他',
         'info-status': '状态','info-status-value': '未婚','about-quote': '音乐是我灵魂的语言，财务是我生活的根基。在理性与感性之间，我找到了属于自己的节奏。',
         'gallery-title': '照片墙','photo1-caption': '山河之间，摇滚不止','photo2-caption': '静谧时光，思考人生','photo3-caption': '展翅高飞，自由翱翔','photo4-caption': '音乐时光，旋律相伴','photo5-caption': '精彩瞬间，记录生活','photo6-caption': '美好时刻，永恒记忆',
-        'videos-title': '视频记录','video1-caption': '吉他演奏片段','video2-caption': '生活记录片段',
+        'videos-title': '视频记录','video1-caption': '吉他演奏片段',
         'skills-title': '我的特长','skill-music-title': '音乐 · 吉他','skill-music-desc': '精通电吉他与木吉他演奏，从摇滚到民谣，用六根弦讲述故事。音乐是生命中不可或缺的部分，每一个音符都是情感的释放。',
         'skill-finance-title': '财务 · 专业','skill-finance-desc': '财务专业背景，具备严谨的逻辑思维和数据分析能力。在数字的世界里保持清醒，用专业的态度处理每一个数据。',
         'contact-title': '联系我','contact-heading': '期待与你相识','contact-desc': '无论是聊音乐、聊财务，还是分享生活，都欢迎添加我的微信。让我们一起创造更多可能！',
@@ -1519,7 +1508,7 @@ const i18n = {
         'info-location': 'Location','info-job': 'Profession','info-job-value': 'Finance Professional','info-music': 'Music','info-music-value': 'Electric & Acoustic Guitar',
         'info-status': 'Status','info-status-value': 'Single','about-quote': 'Music is the language of my soul, finance is my foundation. Between reason and passion, I found my rhythm.',
         'gallery-title': 'Gallery','photo1-caption': 'Between mountains and rivers','photo2-caption': 'Quiet moments','photo3-caption': 'Spread wings and soar','photo4-caption': 'Music time with melody','photo5-caption': 'Wonderful moments in life','photo6-caption': 'Beautiful memories forever',
-        'videos-title': 'Videos','video1-caption': 'Guitar Performance','video2-caption': 'Life Moments',
+        'videos-title': 'Videos','video1-caption': 'Guitar Performance',
         'skills-title': 'My Skills','skill-music-title': 'Music · Guitar','skill-music-desc': 'Proficient in electric and acoustic guitar, telling stories through six strings.',
         'skill-finance-title': 'Finance · Professional','skill-finance-desc': 'Finance professional with rigorous analytical thinking and data capabilities.',
         'contact-title': 'Contact Me','contact-heading': 'Looking Forward to Meeting You','contact-desc': "Whether it's music, finance, or life, feel free to add me on WeChat!",
@@ -1627,13 +1616,31 @@ document.querySelectorAll('.nav-link').forEach(link => {
     });
 });
 
+const photoCount = 6;
 function showPhoto(index) {
     currentPhotoIndex = index;
-    document.querySelectorAll('.photo-card').forEach((c, i) => c.classList.toggle('active', i === index));
-    document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === index));
+    const cards = document.querySelectorAll('.photo-card');
+    const dots = document.querySelectorAll('.dot');
+    const stackClasses = ['stack-prev-2', 'stack-prev-1', 'stack-active', 'stack-next-1', 'stack-next-2', 'stack-next-3'];
+    cards.forEach((card, i) => {
+        card.classList.remove('active', ...stackClasses);
+        const offset = (i - index + photoCount) % photoCount;
+        let cls;
+        switch(offset) {
+            case 0: cls = 'stack-active'; break;
+            case 1: cls = 'stack-next-1'; break;
+            case 2: cls = 'stack-next-2'; break;
+            case 3: cls = 'stack-next-3'; break;
+            case 4: cls = 'stack-prev-2'; break;
+            case 5: cls = 'stack-prev-1'; break;
+        }
+        card.classList.add(cls);
+    });
+    dots.forEach((d, i) => d.classList.toggle('active', i === index));
 }
-function nextPhoto() { showPhoto((currentPhotoIndex + 1) % 6); }
-function prevPhoto() { showPhoto((currentPhotoIndex - 1 + 6) % 6); }
+showPhoto(2);
+function nextPhoto() { showPhoto((currentPhotoIndex + 1) % photoCount); }
+function prevPhoto() { showPhoto((currentPhotoIndex - 1 + photoCount) % photoCount); }
 
 setInterval(() => { nextPhoto(); }, 5000);
 
