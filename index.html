@@ -502,15 +502,14 @@ section { padding: 100px 0; }
     gap: 25px;
 }
 .wechat-qr-wrapper {
-    width: 220px;
-    height: 220px;
+    width: 260px;
     background: #fff;
-    border-radius: 16px;
-    padding: 12px;
+    border-radius: 20px;
+    padding: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
     position: relative;
     overflow: hidden;
 }
@@ -518,15 +517,16 @@ section { padding: 100px 0; }
     content: '';
     position: absolute;
     inset: 0;
-    border-radius: 16px;
-    border: 2px solid rgba(212, 168, 83, 0.4);
+    border-radius: 20px;
+    border: 3px solid rgba(212, 168, 83, 0.5);
     pointer-events: none;
+    z-index: 2;
 }
 .wechat-qr-img {
     width: 100%;
-    height: 100%;
-    object-fit: contain;
-    border-radius: 8px;
+    height: auto;
+    display: block;
+    border-radius: 17px;
 }
 .wechat-qr-placeholder {
     width: 100%;
@@ -655,126 +655,157 @@ section { padding: 100px 0; }
     display: flex;
     align-items: center;
     gap: 0;
-    animation: gentleFloat 4s ease-in-out infinite;
 }
 .music-btn {
-    width: 56px;
-    height: 56px;
+    width: 62px;
+    height: 62px;
     border-radius: 50%;
-    background: linear-gradient(145deg, rgba(30, 30, 46, 0.95) 0%, rgba(15, 15, 24, 0.98) 100%);
+    background: linear-gradient(145deg, rgba(25, 25, 40, 0.97) 0%, rgba(12, 12, 20, 0.98) 100%);
     backdrop-filter: blur(25px);
-    border: 1.5px solid rgba(212, 168, 83, 0.35);
+    border: 2px solid rgba(212, 168, 83, 0.4);
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     padding: 0;
     position: relative;
     box-shadow:
-        0 6px 25px rgba(0, 0, 0, 0.45),
+        0 8px 30px rgba(0, 0, 0, 0.5),
         0 0 0 0 rgba(212, 168, 83, 0),
-        inset 0 1px 1px rgba(255, 255, 255, 0.05);
+        inset 0 1px 2px rgba(255, 255, 255, 0.08),
+        inset 0 -1px 2px rgba(0, 0, 0, 0.3);
+    animation: musicBtnBreathe 4s ease-in-out infinite;
 }
 .music-btn::before {
     content: '';
     position: absolute;
-    inset: -4px;
+    inset: 3px;
     border-radius: 50%;
     border: 1px solid rgba(212, 168, 83, 0.15);
-    opacity: 0.6;
-    transition: all 0.5s ease;
+    pointer-events: none;
 }
 .music-btn::after {
     content: '';
     position: absolute;
-    inset: -8px;
+    inset: -3px;
     border-radius: 50%;
-    border: 1px solid rgba(212, 168, 83, 0.08);
+    background: conic-gradient(from 0deg, transparent 0%, rgba(212, 168, 83, 0.1) 10%, transparent 20%);
     opacity: 0;
-    transition: all 0.5s ease;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
 }
 .music-btn:hover {
-    transform: translateY(-4px) scale(1.08);
-    border-color: rgba(212, 168, 83, 0.6);
+    transform: translateY(-3px) scale(1.05);
+    border-color: rgba(212, 168, 83, 0.7);
     box-shadow:
-        0 15px 45px rgba(0, 0, 0, 0.5),
-        0 0 30px rgba(212, 168, 83, 0.2),
-        inset 0 1px 1px rgba(255, 255, 255, 0.08);
-}
-.music-btn:hover::before {
-    opacity: 1;
-    animation: pulseRing 3s ease-out infinite;
+        0 12px 40px rgba(0, 0, 0, 0.55),
+        0 0 25px rgba(212, 168, 83, 0.2),
+        inset 0 1px 2px rgba(255, 255, 255, 0.1),
+        inset 0 -1px 2px rgba(0, 0, 0, 0.3);
 }
 .music-btn:hover::after {
     opacity: 1;
-    animation: pulseRing 3s ease-out infinite 0.5s;
+    animation: conicSpin 3s linear infinite;
+}
+.music-ticks {
+    position: absolute;
+    inset: 6px;
+    border-radius: 50%;
+    pointer-events: none;
+}
+.music-tick {
+    position: absolute;
+    width: 2px;
+    height: 4px;
+    background: rgba(212, 168, 83, 0.3);
+    border-radius: 1px;
+    left: 50%;
+    top: 2px;
+    transform-origin: center calc(50% + (62px / 2) - 8px);
+    margin-left: -1px;
+}
+.music-tick.major {
+    height: 6px;
+    width: 2.5px;
+    background: rgba(212, 168, 83, 0.5);
+}
+.music-inner-ring {
+    position: absolute;
+    inset: 10px;
+    border-radius: 50%;
+    border: 1px solid rgba(212, 168, 83, 0.1);
+    pointer-events: none;
 }
 .music-treble {
-    font-size: 28px;
+    font-size: 34px;
     line-height: 1;
     color: var(--accent-gold);
     position: relative;
     z-index: 2;
-    filter: drop-shadow(0 0 6px rgba(212, 168, 83, 0.4));
-    animation: trebleSpin 40s linear infinite;
+    filter: drop-shadow(0 0 8px rgba(212, 168, 83, 0.5));
+    animation: trebleSpin 45s linear infinite;
     transform-origin: center;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: filter 0.4s ease;
+    transition: all 0.4s ease;
 }
 .music-treble.paused {
     animation-play-state: paused;
-    opacity: 0.8;
+    opacity: 0.75;
 }
 .music-glow {
     position: absolute;
     inset: 0;
     border-radius: 50%;
-    background: radial-gradient(circle at center, rgba(212, 168, 83, 0.12) 0%, transparent 70%);
-    opacity: 0;
-    transition: opacity 0.5s ease;
+    background: radial-gradient(circle at center, rgba(212, 168, 83, 0.1) 0%, transparent 65%);
+    opacity: 0.5;
+    transition: opacity 0.4s ease;
 }
 .music-btn.playing .music-glow {
     opacity: 1;
-    animation: glowPulse 3s ease-in-out infinite;
+    animation: glowPulse 3.5s ease-in-out infinite;
 }
 .music-btn.playing .music-treble {
-    animation-duration: 25s;
-    filter: drop-shadow(0 0 15px rgba(212, 168, 83, 0.6)) drop-shadow(0 0 25px rgba(212, 168, 83, 0.3));
+    animation-duration: 28s;
+    filter: drop-shadow(0 0 12px rgba(212, 168, 83, 0.7)) drop-shadow(0 0 25px rgba(212, 168, 83, 0.35));
+}
+.music-btn.playing {
+    border-color: rgba(212, 168, 83, 0.6);
+    animation: none;
 }
 .music-note {
     position: absolute;
     color: var(--accent-gold);
     opacity: 0;
-    font-size: 11px;
+    font-size: 12px;
     pointer-events: none;
     filter: drop-shadow(0 0 4px rgba(212, 168, 83, 0.5));
 }
 .music-btn.playing .music-note:nth-child(1) {
-    animation: noteFloat 3s ease-out infinite;
-    top: -5px;
-    right: 5px;
+    animation: noteFloat 3.5s ease-out infinite;
+    top: -8px;
+    right: 8px;
 }
 .music-btn.playing .music-note:nth-child(2) {
-    animation: noteFloat 3s ease-out infinite 1s;
+    animation: noteFloat 3.5s ease-out infinite 1.2s;
     top: 0;
-    right: -3px;
+    right: -5px;
 }
 .music-btn.playing .music-note:nth-child(3) {
-    animation: noteFloat 3s ease-out infinite 2s;
-    top: -3px;
-    left: 3px;
+    animation: noteFloat 3.5s ease-out infinite 2.4s;
+    top: -5px;
+    left: 5px;
 }
 .music-hint {
     position: absolute;
-    right: 72px;
+    right: 78px;
     top: 50%;
     transform: translateY(-50%);
     background: rgba(20, 20, 30, 0.96);
     backdrop-filter: blur(20px);
-    padding: 9px 16px;
+    padding: 10px 18px;
     border-radius: 25px;
     font-size: 12px;
     color: var(--text-secondary);
@@ -790,38 +821,45 @@ section { padding: 100px 0; }
     opacity: 1;
     transform: translateY(-50%) translateX(-8px);
 }
+@keyframes musicBtnBreathe {
+    0%, 100% { box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5), 0 0 0 0 rgba(212, 168, 83, 0), inset 0 1px 2px rgba(255, 255, 255, 0.08), inset 0 -1px 2px rgba(0, 0, 0, 0.3); }
+    50% { box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5), 0 0 15px rgba(212, 168, 83, 0.1), inset 0 1px 2px rgba(255, 255, 255, 0.08), inset 0 -1px 2px rgba(0, 0, 0, 0.3); }
+}
 @keyframes trebleSpin {
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
 }
-@keyframes pulseRing {
-    0% { transform: scale(1); opacity: 0.6; }
-    100% { transform: scale(1.4); opacity: 0; }
+@keyframes conicSpin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
 }
 @keyframes glowPulse {
-    0%, 100% { opacity: 0.5; }
+    0%, 100% { opacity: 0.6; }
     50% { opacity: 1; }
 }
 @keyframes noteFloat {
     0% {
         opacity: 0;
-        transform: translateY(0) scale(0.4) rotate(-10deg);
+        transform: translateY(0) scale(0.5) rotate(-8deg);
     }
     15% {
-        opacity: 0.9;
-        transform: translateY(-5px) scale(1) rotate(0deg);
+        opacity: 0.85;
+        transform: translateY(-6px) scale(1) rotate(0deg);
     }
     100% {
         opacity: 0;
-        transform: translateY(-35px) scale(0.6) rotate(20deg);
+        transform: translateY(-38px) scale(0.6) rotate(18deg);
     }
 }
 @media (max-width: 768px) {
-    .music-control { bottom: 55px; right: 22px; animation: none; }
-    .music-btn { width: 50px; height: 50px; }
-    .music-treble { font-size: 26px; }
+    .music-control { bottom: 55px; right: 22px; }
+    .music-btn { width: 54px; height: 54px; animation: none; }
+    .music-treble { font-size: 30px; }
     .music-note { display: none; }
     .music-hint { display: none; }
+    .music-ticks { inset: 5px; }
+    .music-tick { transform-origin: center calc(50% + (54px / 2) - 7px); }
+    .music-inner-ring { inset: 8px; }
 }
 .toast {
     position: fixed;
@@ -886,7 +924,7 @@ section.visible { opacity: 1; transform: translateY(0); }
     .photo-stack { height: 400px; max-width: 320px; }
     .skill-card { padding: 30px 25px; }
     .contact-text h3 { font-size: 24px; }
-    .wechat-qr-wrapper { width: 190px; height: 190px; padding: 10px; }
+    .wechat-qr-wrapper { width: 230px; }
 }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -1207,6 +1245,8 @@ section.visible { opacity: 1; transform: translateY(0); }
         <span class="music-hint" id="musicHint">点击播放背景音乐</span>
         <button class="music-btn" id="musicBtn" onclick="toggleMusic()">
             <div class="music-glow"></div>
+            <div class="music-ticks" id="musicTicks"></div>
+            <div class="music-inner-ring"></div>
             <span class="music-note">♪</span>
             <span class="music-note">♫</span>
             <span class="music-note">♪</span>
@@ -1392,6 +1432,18 @@ window.addEventListener('scroll', () => {
     });
     document.querySelectorAll('.nav-link').forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + current));
 });
+
+function initMusicTicks() {
+    const ticksContainer = document.getElementById('musicTicks');
+    if (!ticksContainer) return;
+    for (let i = 0; i < 12; i++) {
+        const tick = document.createElement('div');
+        tick.className = 'music-tick' + (i % 3 === 0 ? ' major' : '');
+        tick.style.transform = `rotate(${i * 30}deg)`;
+        ticksContainer.appendChild(tick);
+    }
+}
+initMusicTicks();
 
 const observer = new IntersectionObserver(entries => {
     entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
