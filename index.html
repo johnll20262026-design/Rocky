@@ -527,11 +527,7 @@ section { padding: 100px 0; }
 .footer-logo .logo-mark { font-size: 28px; }
 .footer-text { color: var(--text-muted); font-size: 12px; letter-spacing: 1px; }
 .tech-support {
-    position: fixed;
-    bottom: 25px;
-    right: 25px;
-    z-index: 1000;
-    animation: gentleFloat 4s ease-in-out infinite;
+    display: none;
 }
 @keyframes gentleFloat {
     0%, 100% { transform: translateY(0); }
@@ -658,6 +654,7 @@ section.visible { opacity: 1; transform: translateY(0); }
                 <a href="#gallery" class="nav-link" data-i18n="nav-gallery">照片</a>
                 <a href="#skills" class="nav-link" data-i18n="nav-skills">特长</a>
                 <a href="#contact" class="nav-link" data-i18n="nav-contact">联系</a>
+                <a href="https://ai-tools-guide-ar8.pages.dev/" target="_blank" class="nav-link" data-i18n="nav-support">技术支持</a>
             </div>
             <div class="lang-switch">
                 <button class="lang-btn active" data-lang="zh" onclick="setLanguage('zh')">中文</button>
@@ -951,7 +948,7 @@ section.visible { opacity: 1; transform: translateY(0); }
     <script>
 const i18n = {
     zh: {
-        'nav-home': '首页','nav-about': '关于','nav-gallery': '照片','nav-skills': '特长','nav-contact': '联系',
+        'nav-home': '首页','nav-about': '关于','nav-gallery': '照片','nav-skills': '特长','nav-contact': '联系','nav-support': '技术支持',
         'hero-tag': '武汉 · 中国','hero-title-1': '你好，我是','hero-subtitle': '财务人 · 吉他手 · 生活探索者',
         'hero-desc': '在数字与音符之间寻找平衡，用理性与感性诠释生活','cta-explore': '了解更多',
         'about-title': '关于我','about-intro': '一个在财务世界里严谨计算，在音乐世界里自由燃烧的人。白天与数字、报表打交道，夜晚抱起吉他，让旋律说话。',
@@ -965,7 +962,7 @@ const i18n = {
         'footer-text': '用音乐表达，用专业证明 © 2024 Rocky'
     },
     en: {
-        'nav-home': 'Home','nav-about': 'About','nav-gallery': 'Photos','nav-skills': 'Skills','nav-contact': 'Contact',
+        'nav-home': 'Home','nav-about': 'About','nav-gallery': 'Photos','nav-skills': 'Skills','nav-contact': 'Contact','nav-support': 'Support',
         'hero-tag': 'Wuhan · China','hero-title-1': "Hi, I'm",'hero-subtitle': 'Finance · Guitarist · Explorer',
         'hero-desc': 'Finding balance between numbers and notes','cta-explore': 'Learn More',
         'about-title': 'About Me','about-intro': 'Calculating rigorously in finance, burning freely in music. Working with numbers by day, letting melodies speak at night.',
