@@ -401,6 +401,12 @@ section { padding: 100px 0; }
     pointer-events: none;
     transform-origin: center bottom;
 }
+.photo-card[data-index="0"] { background: linear-gradient(135deg, #0f3460 0%, #16213e 50%, #1a1a2e 100%); }
+.photo-card[data-index="1"] { background: linear-gradient(135deg, #4a4a6a 0%, #6b5b73 50%, #2d2d44 100%); }
+.photo-card[data-index="2"] { background: linear-gradient(135deg, #415a77 0%, #1b263b 50%, #0d1b2a 100%); }
+.photo-card[data-index="3"] { background: linear-gradient(135deg, #5c4033 0%, #8b4513 50%, #2d1810 100%); }
+.photo-card[data-index="4"] { background: linear-gradient(135deg, #2d4a3e 0%, #3d6b5c 50%, #1a2e26 100%); }
+.photo-card[data-index="5"] { background: linear-gradient(135deg, #4a3d5c 0%, #6b5c7d 50%, #251d2e 100%); }
 .photo-inner {
     width: 100%;
     height: 100%;
@@ -1215,11 +1221,7 @@ section.visible { opacity: 1; transform: translateY(0); }
                 <div class="photo-stack" id="photoStack">
                     <div class="photo-card" data-index="0" onclick="showPhoto(0)">
                         <div class="photo-inner">
-                            <img loading="lazy" decoding="async" src="images/photo1.jpg?v=2" alt="Photo 1" onerror="this.style.display='none';this.parentElement.classList.add('photo1-bg')">
-                            <div class="photo-placeholder" id="ph1" style="display:none">
-                                <span>📷</span>
-                                <span>photo1.jpg</span>
-                            </div>
+                            <img loading="lazy" decoding="async" src="images/photo1.jpg?v=3" alt="Photo 1">
                             <div class="photo-overlay">
                                 <span class="photo-caption" data-i18n="photo1-caption">山河之间，摇滚不止</span>
                             </div>
@@ -1227,11 +1229,7 @@ section.visible { opacity: 1; transform: translateY(0); }
                     </div>
                     <div class="photo-card" data-index="1" onclick="showPhoto(1)">
                         <div class="photo-inner">
-                            <img loading="lazy" decoding="async" src="images/photo2.jpg?v=2" alt="Photo 2" onerror="this.style.display='none';this.parentElement.classList.add('photo2-bg')">
-                            <div class="photo-placeholder" id="ph2" style="display:none">
-                                <span>📷</span>
-                                <span>photo2.jpg</span>
-                            </div>
+                            <img loading="lazy" decoding="async" src="images/photo2.jpg?v=3" alt="Photo 2">
                             <div class="photo-overlay">
                                 <span class="photo-caption" data-i18n="photo2-caption">静谧时光，思考人生</span>
                             </div>
@@ -1239,11 +1237,7 @@ section.visible { opacity: 1; transform: translateY(0); }
                     </div>
                     <div class="photo-card" data-index="2" onclick="showPhoto(2)">
                         <div class="photo-inner">
-                            <img loading="lazy" decoding="async" src="images/photo3.jpg?v=2" alt="Photo 3" onerror="this.style.display='none';this.parentElement.classList.add('photo3-bg')">
-                            <div class="photo-placeholder" id="ph3" style="display:none">
-                                <span>📷</span>
-                                <span>photo3.jpg</span>
-                            </div>
+                            <img loading="lazy" decoding="async" src="images/photo3.jpg?v=3" alt="Photo 3">
                             <div class="photo-overlay">
                                 <span class="photo-caption" data-i18n="photo3-caption">展翅高飞，自由翱翔</span>
                             </div>
@@ -1251,11 +1245,7 @@ section.visible { opacity: 1; transform: translateY(0); }
                     </div>
                     <div class="photo-card" data-index="3" onclick="showPhoto(3)">
                         <div class="photo-inner">
-                            <img loading="lazy" decoding="async" src="images/photo4.jpg?v=2" alt="Photo 4" onerror="this.style.display='none';this.parentElement.classList.add('photo4-bg')">
-                            <div class="photo-placeholder" id="ph4" style="display:none">
-                                <span>📷</span>
-                                <span>photo4.jpg</span>
-                            </div>
+                            <img loading="lazy" decoding="async" src="images/photo4.jpg?v=3" alt="Photo 4">
                             <div class="photo-overlay">
                                 <span class="photo-caption" data-i18n="photo4-caption">音乐时光，旋律相伴</span>
                             </div>
@@ -1263,11 +1253,7 @@ section.visible { opacity: 1; transform: translateY(0); }
                     </div>
                     <div class="photo-card" data-index="4" onclick="showPhoto(4)">
                         <div class="photo-inner">
-                            <img loading="lazy" decoding="async" src="images/photo5.jpg?v=2" alt="Photo 5" onerror="this.style.display='none';this.parentElement.classList.add('photo5-bg')">
-                            <div class="photo-placeholder" id="ph5" style="display:none">
-                                <span>📷</span>
-                                <span>photo5.jpg</span>
-                            </div>
+                            <img loading="lazy" decoding="async" src="images/photo5.jpg?v=3" alt="Photo 5">
                             <div class="photo-overlay">
                                 <span class="photo-caption" data-i18n="photo5-caption">精彩瞬间，记录生活</span>
                             </div>
@@ -1275,11 +1261,7 @@ section.visible { opacity: 1; transform: translateY(0); }
                     </div>
                     <div class="photo-card" data-index="5" onclick="showPhoto(5)">
                         <div class="photo-inner">
-                            <img loading="lazy" decoding="async" src="images/photo6.jpg?v=2" alt="Photo 6" onerror="this.style.display='none';this.parentElement.classList.add('photo6-bg')">
-                            <div class="photo-placeholder" id="ph6" style="display:none">
-                                <span>📷</span>
-                                <span>photo6.jpg</span>
-                            </div>
+                            <img loading="lazy" decoding="async" src="images/photo6.jpg?v=3" alt="Photo 6">
                             <div class="photo-overlay">
                                 <span class="photo-caption" data-i18n="photo6-caption">美好时刻，永恒记忆</span>
                             </div>
@@ -1317,7 +1299,7 @@ section.visible { opacity: 1; transform: translateY(0); }
                 <div class="video-card">
                     <div class="video-wrapper">
                         <video controls preload="metadata" playsinline webkit-playsinline>
-                            <source src="videos/video1.mp4?v=2" type="video/mp4">
+                            <source src="videos/video1.mp4?v=3" type="video/mp4">
                             您的浏览器不支持视频播放
                         </video>
                         <div class="video-error" id="videoError">
@@ -1411,25 +1393,7 @@ section.visible { opacity: 1; transform: translateY(0); }
                 </div>
                 <div class="wechat-card">
                     <div class="wechat-qr-wrapper">
-                        <img class="wechat-qr-img" loading="lazy" decoding="async" src="images/wechat-qr.png?v=2" alt="微信二维码" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-                        <div class="wechat-qr-placeholder" style="display:none;">
-                            <div class="qr-pattern">
-                                <svg viewBox="0 0 100 100" fill="currentColor">
-                                    <rect x="10" y="10" width="25" height="25" fill="none" stroke="currentColor" stroke-width="3"/>
-                                    <rect x="15" y="15" width="15" height="15"/>
-                                    <rect x="65" y="10" width="25" height="25" fill="none" stroke="currentColor" stroke-width="3"/>
-                                    <rect x="70" y="15" width="15" height="15"/>
-                                    <rect x="10" y="65" width="25" height="25" fill="none" stroke="currentColor" stroke-width="3"/>
-                                    <rect x="15" y="70" width="15" height="15"/>
-                                    <rect x="40" y="10" width="10" height="10"/>
-                                    <rect x="55" y="10" width="5" height="5"/>
-                                    <rect x="40" y="40" width="20" height="20" rx="3"/>
-                                    <rect x="80" y="70" width="10" height="10"/>
-                                </svg>
-                            </div>
-                            <p class="qr-hint" data-i18n="qr-hint">微信二维码</p>
-                            <p class="qr-desc">请将二维码保存为 images/wechat-qr.png</p>
-                        </div>
+                        <img class="wechat-qr-img" loading="eager" decoding="async" src="images/wechat-qr.png?v=3" alt="微信二维码">
                     </div>
                     <div class="wechat-info">
                         <div class="wechat-id-section">
@@ -1698,7 +1662,7 @@ document.querySelectorAll('.video-wrapper video').forEach(video => {
     });
     setTimeout(() => {
         if (video.readyState < 1) {
-            showMsg('视频加载较慢，GitHub Pages国内访问可能不稳定\n请耐心等待或刷新重试', false);
+            showMsg('视频加载较慢，请耐心等待或刷新重试', false);
         }
     }, 10000);
 });
