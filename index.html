@@ -453,17 +453,11 @@ section { padding: 100px 0; }
 .photo-card:hover .photo-overlay { transform: translateY(0); opacity: 1; }
 .photo-caption { color: white; font-size: 16px; font-weight: 500; }
 .photo-card.stack-hidden { opacity: 0; pointer-events: none; transform: scale(0.7) translateY(40px); }
-.photo-card[data-index="0"] { transform: rotate(-8deg) translateX(-45px) scale(0.85); z-index: 1; opacity: 0.5; pointer-events: none; }
-.photo-card[data-index="1"] { transform: rotate(-4deg) translateX(-22px) scale(0.93); z-index: 2; opacity: 0.85; pointer-events: none; box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4); }
-.photo-card[data-index="2"] { transform: rotate(0deg) translateX(0) scale(1); z-index: 10; opacity: 1; pointer-events: auto; box-shadow: 0 25px 70px rgba(0, 0, 0, 0.6); }
-.photo-card[data-index="3"] { transform: rotate(4deg) translateX(22px) scale(0.93); z-index: 2; opacity: 0.85; pointer-events: none; box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4); }
-.photo-card[data-index="4"] { transform: rotate(8deg) translateX(45px) scale(0.85); z-index: 1; opacity: 0.5; pointer-events: none; }
-.photo-card[data-index="5"] { opacity: 0; pointer-events: none; transform: scale(0.7) translateY(40px); }
-.photo-card.stack-behind-left { transform: rotate(-8deg) translateX(-45px) scale(0.85); z-index: 1; opacity: 0.5; pointer-events: none; }
-.photo-card.stack-peek-left { transform: rotate(-4deg) translateX(-22px) scale(0.93); z-index: 2; opacity: 0.85; pointer-events: none; box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4); }
-.photo-card.stack-active { transform: rotate(0deg) translateX(0) scale(1); z-index: 10; opacity: 1; pointer-events: auto; box-shadow: 0 25px 70px rgba(0, 0, 0, 0.6); }
-.photo-card.stack-peek-right { transform: rotate(4deg) translateX(22px) scale(0.93); z-index: 2; opacity: 0.85; pointer-events: none; box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4); }
-.photo-card.stack-behind-right { transform: rotate(8deg) translateX(45px) scale(0.85); z-index: 1; opacity: 0.5; pointer-events: none; }
+.photo-card.stack-behind-left { transform: rotate(-8deg) translateX(-45px) scale(0.85) !important; z-index: 1; opacity: 0.5; pointer-events: none; }
+.photo-card.stack-peek-left { transform: rotate(-4deg) translateX(-22px) scale(0.93) !important; z-index: 2; opacity: 0.85; pointer-events: none; box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4); }
+.photo-card.stack-active { transform: rotate(0deg) translateX(0) scale(1) !important; z-index: 10; opacity: 1; pointer-events: auto; box-shadow: 0 25px 70px rgba(0, 0, 0, 0.6); }
+.photo-card.stack-peek-right { transform: rotate(4deg) translateX(22px) scale(0.93) !important; z-index: 2; opacity: 0.85; pointer-events: none; box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4); }
+.photo-card.stack-behind-right { transform: rotate(8deg) translateX(45px) scale(0.85) !important; z-index: 1; opacity: 0.5; pointer-events: none; }
 .photo-controls { display: flex; align-items: center; gap: 25px; }
 .photo-nav {
     width: 45px;
@@ -1099,17 +1093,12 @@ section.visible { opacity: 1; transform: translateY(0); }
     .info-cards { grid-template-columns: 1fr; }
     .photo-showcase { padding: 0 60px; overflow: visible; }
     .photo-stack { height: 340px; max-width: 220px; overflow: visible; margin: 0 auto; }
-    .photo-card[data-index="0"] { transform: rotate(-5deg) translateX(-18px) scale(0.85); }
-    .photo-card[data-index="1"] { transform: rotate(-2deg) translateX(-9px) scale(0.93); }
-    .photo-card[data-index="2"] { transform: rotate(0deg) translateX(0) scale(1); }
-    .photo-card[data-index="3"] { transform: rotate(2deg) translateX(9px) scale(0.93); }
-    .photo-card[data-index="4"] { transform: rotate(5deg) translateX(18px) scale(0.85); }
-    .photo-card[data-index="5"] { transform: scale(0.65) translateY(30px); }
-    .photo-card.stack-behind-left { transform: rotate(-5deg) translateX(-18px) scale(0.85); }
-    .photo-card.stack-peek-left { transform: rotate(-2deg) translateX(-9px) scale(0.93); }
-    .photo-card.stack-peek-right { transform: rotate(2deg) translateX(9px) scale(0.93); }
-    .photo-card.stack-behind-right { transform: rotate(5deg) translateX(18px) scale(0.85); }
-    .photo-card.stack-hidden { transform: scale(0.65) translateY(30px); }
+    .photo-card.stack-behind-left { transform: rotate(-5deg) translateX(-18px) scale(0.85) !important; }
+    .photo-card.stack-peek-left { transform: rotate(-2deg) translateX(-9px) scale(0.93) !important; }
+    .photo-card.stack-active { transform: rotate(0deg) translateX(0) scale(1) !important; }
+    .photo-card.stack-peek-right { transform: rotate(2deg) translateX(9px) scale(0.93) !important; }
+    .photo-card.stack-behind-right { transform: rotate(5deg) translateX(18px) scale(0.85) !important; }
+    .photo-card.stack-hidden { transform: scale(0.65) translateY(30px) !important; }
     .skill-card { padding: 30px 25px; }
     .videos-grid { grid-template-columns: 1fr; gap: 20px; }
     .contact-text h3 { font-size: 24px; }
@@ -1652,10 +1641,9 @@ setInterval(() => { nextPhoto(); }, 5000);
 
 document.querySelectorAll('.video-wrapper video').forEach(video => {
     const errorEl = video.parentElement.querySelector('.video-error');
-    let hasError = false;
+    let wasMusicPlayingBeforeVideo = false;
     const showMsg = (msg, isError) => {
         if (errorEl && isError) {
-            hasError = true;
             const icon = errorEl.querySelector('.video-error-icon');
             const span = errorEl.querySelector('span');
             if (msg) span.textContent = msg;
@@ -1673,6 +1661,33 @@ document.querySelectorAll('.video-wrapper video').forEach(video => {
     video.addEventListener('canplay', hideOverlay);
     video.addEventListener('playing', hideOverlay);
     video.addEventListener('play', hideOverlay);
+    video.addEventListener('play', () => {
+        if (isMusicPlaying) {
+            wasMusicPlayingBeforeVideo = true;
+            bgMusic.pause();
+            updateMusicUI(false);
+        } else {
+            wasMusicPlayingBeforeVideo = false;
+        }
+    });
+    video.addEventListener('pause', () => {
+        if (wasMusicPlayingBeforeVideo && !isMusicPlaying) {
+            bgMusic.volume = 0.35;
+            bgMusic.play().then(() => {
+                isMusicPlaying = true;
+                updateMusicUI(true);
+            }).catch(() => {});
+        }
+    });
+    video.addEventListener('ended', () => {
+        if (wasMusicPlayingBeforeVideo && !isMusicPlaying) {
+            bgMusic.volume = 0.35;
+            bgMusic.play().then(() => {
+                isMusicPlaying = true;
+                updateMusicUI(true);
+            }).catch(() => {});
+        }
+    });
     video.addEventListener('error', () => {
         showMsg('视频加载失败，请检查网络或刷新页面', true);
     });
