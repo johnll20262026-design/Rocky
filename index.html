@@ -17,6 +17,7 @@
     --accent-gold-light: #f0c878;
     --accent-blue: #4a90d9;
     --accent-blue-light: #67b8de;
+    --border-color: rgba(255, 255, 255, 0.05);
     --gradient-gold: linear-gradient(135deg, #d4a853 0%, #f0c878 100%);
     --font-display: Georgia, 'Times New Roman', 'SimSun', serif;
     --font-body: 'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', 'Helvetica Neue', Arial, sans-serif;
@@ -507,15 +508,16 @@ section { padding: 100px 0; }
     left: 0;
     right: 0;
     bottom: 0;
-    display: none;
+    display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
     color: var(--text-muted);
     gap: 8px;
+    transition: opacity 0.3s ease;
 }
-.video-error.show { display: flex; }
+.video-error.hide { opacity: 0; pointer-events: none; }
 .video-error-icon {
     width: 50px;
     height: 50px;
@@ -1213,7 +1215,7 @@ section.visible { opacity: 1; transform: translateY(0); }
                 <div class="photo-stack" id="photoStack">
                     <div class="photo-card" data-index="0" onclick="showPhoto(0)">
                         <div class="photo-inner">
-                            <img loading="lazy" decoding="async" src="images/photo1.jpg" alt="Photo 1" onerror="this.style.display='none';this.parentElement.classList.add('photo1-bg')">
+                            <img loading="lazy" decoding="async" src="images/photo1.jpg?v=2" alt="Photo 1" onerror="this.style.display='none';this.parentElement.classList.add('photo1-bg')">
                             <div class="photo-placeholder" id="ph1" style="display:none">
                                 <span>📷</span>
                                 <span>photo1.jpg</span>
@@ -1225,7 +1227,7 @@ section.visible { opacity: 1; transform: translateY(0); }
                     </div>
                     <div class="photo-card" data-index="1" onclick="showPhoto(1)">
                         <div class="photo-inner">
-                            <img loading="lazy" decoding="async" src="images/photo2.jpg" alt="Photo 2" onerror="this.style.display='none';this.parentElement.classList.add('photo2-bg')">
+                            <img loading="lazy" decoding="async" src="images/photo2.jpg?v=2" alt="Photo 2" onerror="this.style.display='none';this.parentElement.classList.add('photo2-bg')">
                             <div class="photo-placeholder" id="ph2" style="display:none">
                                 <span>📷</span>
                                 <span>photo2.jpg</span>
@@ -1237,7 +1239,7 @@ section.visible { opacity: 1; transform: translateY(0); }
                     </div>
                     <div class="photo-card" data-index="2" onclick="showPhoto(2)">
                         <div class="photo-inner">
-                            <img loading="lazy" decoding="async" src="images/photo3.jpg" alt="Photo 3" onerror="this.style.display='none';this.parentElement.classList.add('photo3-bg')">
+                            <img loading="lazy" decoding="async" src="images/photo3.jpg?v=2" alt="Photo 3" onerror="this.style.display='none';this.parentElement.classList.add('photo3-bg')">
                             <div class="photo-placeholder" id="ph3" style="display:none">
                                 <span>📷</span>
                                 <span>photo3.jpg</span>
@@ -1249,7 +1251,7 @@ section.visible { opacity: 1; transform: translateY(0); }
                     </div>
                     <div class="photo-card" data-index="3" onclick="showPhoto(3)">
                         <div class="photo-inner">
-                            <img loading="lazy" decoding="async" src="images/photo4.jpg" alt="Photo 4" onerror="this.style.display='none';this.parentElement.classList.add('photo4-bg')">
+                            <img loading="lazy" decoding="async" src="images/photo4.jpg?v=2" alt="Photo 4" onerror="this.style.display='none';this.parentElement.classList.add('photo4-bg')">
                             <div class="photo-placeholder" id="ph4" style="display:none">
                                 <span>📷</span>
                                 <span>photo4.jpg</span>
@@ -1261,7 +1263,7 @@ section.visible { opacity: 1; transform: translateY(0); }
                     </div>
                     <div class="photo-card" data-index="4" onclick="showPhoto(4)">
                         <div class="photo-inner">
-                            <img loading="lazy" decoding="async" src="images/photo5.jpg" alt="Photo 5" onerror="this.style.display='none';this.parentElement.classList.add('photo5-bg')">
+                            <img loading="lazy" decoding="async" src="images/photo5.jpg?v=2" alt="Photo 5" onerror="this.style.display='none';this.parentElement.classList.add('photo5-bg')">
                             <div class="photo-placeholder" id="ph5" style="display:none">
                                 <span>📷</span>
                                 <span>photo5.jpg</span>
@@ -1273,7 +1275,7 @@ section.visible { opacity: 1; transform: translateY(0); }
                     </div>
                     <div class="photo-card" data-index="5" onclick="showPhoto(5)">
                         <div class="photo-inner">
-                            <img loading="lazy" decoding="async" src="images/photo6.jpg" alt="Photo 6" onerror="this.style.display='none';this.parentElement.classList.add('photo6-bg')">
+                            <img loading="lazy" decoding="async" src="images/photo6.jpg?v=2" alt="Photo 6" onerror="this.style.display='none';this.parentElement.classList.add('photo6-bg')">
                             <div class="photo-placeholder" id="ph6" style="display:none">
                                 <span>📷</span>
                                 <span>photo6.jpg</span>
@@ -1314,12 +1316,13 @@ section.visible { opacity: 1; transform: translateY(0); }
             <div class="videos-grid">
                 <div class="video-card">
                     <div class="video-wrapper">
-                        <video controls preload="none" playsinline>
-                            <source src="videos/video1.mp4" type="video/mp4">
+                        <video controls preload="metadata" playsinline webkit-playsinline>
+                            <source src="videos/video1.mp4?v=2" type="video/mp4">
+                            您的浏览器不支持视频播放
                         </video>
                         <div class="video-error" id="videoError">
-                            <div class="video-error-icon">!</div>
-                            <span>视频加载失败，请检查文件格式</span>
+                            <div class="video-error-icon" style="background: linear-gradient(135deg, #d4a853, #f0c878);">⟳</div>
+                            <span>视频加载中，请稍候...</span>
                         </div>
                     </div>
                     <div class="video-info">
@@ -1408,7 +1411,7 @@ section.visible { opacity: 1; transform: translateY(0); }
                 </div>
                 <div class="wechat-card">
                     <div class="wechat-qr-wrapper">
-                        <img class="wechat-qr-img" loading="lazy" decoding="async" src="images/wechat-qr.png" alt="微信二维码" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                        <img class="wechat-qr-img" loading="lazy" decoding="async" src="images/wechat-qr.png?v=2" alt="微信二维码" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
                         <div class="wechat-qr-placeholder" style="display:none;">
                             <div class="qr-pattern">
                                 <svg viewBox="0 0 100 100" fill="currentColor">
@@ -1445,7 +1448,7 @@ section.visible { opacity: 1; transform: translateY(0); }
             <div class="footer-content">
                 <div class="footer-logo">
                     <span class="logo-mark">R</span>
-                    <span>OCKY</span>
+                    <span class="logo-text">OCKY</span>
                 </div>
                 <p class="footer-text" data-i18n="footer-text">用音乐表达，用专业证明 © 2024 Rocky</p>
             </div>
@@ -1486,8 +1489,8 @@ section.visible { opacity: 1; transform: translateY(0); }
             <span class="music-note">♪</span>
         </button>
     </div>
-    <audio id="bgMusic" loop preload="none">
-        <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3" type="audio/mpeg">
+    <audio id="bgMusic" loop preload="auto">
+        <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3&v=2" type="audio/mpeg">
     </audio>
 
     <div class="toast" id="toast"></div>
@@ -1571,7 +1574,7 @@ const musicBtn = document.getElementById('musicBtn');
 const musicVinyl = document.getElementById('musicVinyl');
 const musicHint = document.getElementById('musicHint');
 
-bgMusic.volume = 0.3;
+bgMusic.volume = 0.35;
 
 function updateMusicUI(playing) {
     if (playing) {
@@ -1591,7 +1594,7 @@ function toggleMusic() {
         isMusicPlaying = false;
         updateMusicUI(false);
     } else {
-        bgMusic.volume = 0.4;
+        bgMusic.volume = 0.35;
         bgMusic.play().then(() => {
             isMusicPlaying = true;
             updateMusicUI(true);
@@ -1602,19 +1605,24 @@ function toggleMusic() {
 }
 
 function tryAutoPlay() {
-    if (hasTriedAutoplay) return;
-    hasTriedAutoplay = true;
-    bgMusic.volume = 0.4;
+    if (isMusicPlaying) return;
+    bgMusic.volume = 0.35;
     bgMusic.play().then(() => {
         isMusicPlaying = true;
         updateMusicUI(true);
-    }).catch(() => {
-    });
+        document.removeEventListener('click', tryAutoPlay);
+        document.removeEventListener('touchstart', tryAutoPlay);
+        document.removeEventListener('scroll', tryAutoPlay);
+        document.removeEventListener('mousemove', tryAutoPlay);
+        document.removeEventListener('keydown', tryAutoPlay);
+    }).catch(() => {});
 }
 
-document.addEventListener('click', tryAutoPlay, { once: true });
-document.addEventListener('touchstart', tryAutoPlay, { once: true });
-document.addEventListener('scroll', tryAutoPlay, { once: true });
+document.addEventListener('click', tryAutoPlay);
+document.addEventListener('touchstart', tryAutoPlay);
+document.addEventListener('scroll', tryAutoPlay, { passive: true });
+document.addEventListener('mousemove', tryAutoPlay, { once: true });
+document.addEventListener('keydown', tryAutoPlay, { once: true });
 
 document.querySelectorAll('.nav-link').forEach(link => {
     link.addEventListener('click', e => {
@@ -1658,12 +1666,41 @@ setInterval(() => { nextPhoto(); }, 5000);
 
 document.querySelectorAll('.video-wrapper video').forEach(video => {
     const errorEl = video.parentElement.querySelector('.video-error');
+    const showMsg = (msg, isError) => {
+        if (errorEl) {
+            const icon = errorEl.querySelector('.video-error-icon');
+            const span = errorEl.querySelector('span');
+            if (msg) span.textContent = msg;
+            if (isError) {
+                icon.style.background = 'linear-gradient(135deg, #c0392b, #e74c3c)';
+                icon.textContent = '!';
+            } else {
+                icon.style.background = 'linear-gradient(135deg, #d4a853, #f0c878)';
+                icon.textContent = '⟳';
+            }
+            errorEl.classList.remove('hide');
+        }
+    };
+    const hideOverlay = () => {
+        if (errorEl) errorEl.classList.add('hide');
+    };
+    video.addEventListener('loadedmetadata', hideOverlay);
+    video.addEventListener('canplay', hideOverlay);
+    video.addEventListener('playing', hideOverlay);
     video.addEventListener('error', () => {
-        if (errorEl) errorEl.classList.add('show');
+        showMsg('视频加载失败，请检查网络或刷新页面', true);
     });
-    video.addEventListener('loadeddata', () => {
-        if (errorEl) errorEl.classList.remove('show');
+    video.addEventListener('stalled', () => {
+        showMsg('网络较慢，视频正在缓冲...', false);
     });
+    video.addEventListener('waiting', () => {
+        showMsg('视频缓冲中...', false);
+    });
+    setTimeout(() => {
+        if (video.readyState < 1) {
+            showMsg('视频加载较慢，GitHub Pages国内访问可能不稳定\n请耐心等待或刷新重试', false);
+        }
+    }, 10000);
 });
 
 function copyWechat() {
@@ -1689,7 +1726,7 @@ function showToast(msg) {
 window.addEventListener('scroll', () => {
     const navbar = document.getElementById('navbar');
     navbar.classList.toggle('scrolled', window.scrollY > 50);
-    const sections = ['home', 'about', 'gallery', 'skills', 'contact'];
+    const sections = ['home', 'about', 'gallery', 'videos', 'skills', 'contact'];
     let current = '';
     sections.forEach(id => {
         const s = document.getElementById(id);
