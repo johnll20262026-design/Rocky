@@ -504,9 +504,38 @@ section { padding: 100px 0; }
     border-radius: 16px 16px 0 0;
     overflow: hidden;
     background: #000;
+    position: relative;
+}
+.video-cover {
+    display: block;
+    width: 100%;
+    cursor: pointer;
+}
+.video-play-btn-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: rgba(212, 168, 83, 0.95);
+    pointer-events: none;
+}
+.video-play-btn-center::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 55%;
+    transform: translate(-50%, -50%);
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 16px 0 16px 28px;
+    border-color: transparent transparent transparent #1a1a1a;
 }
 .video-wrapper video {
-    display: block;
+    display: none;
     width: 100%;
     height: auto;
     background: #000;
@@ -1304,16 +1333,23 @@ section.visible { opacity: 1; transform: translateY(0); }
             </div>
             <div class="videos-grid">
                 <div class="video-card">
-                    <div class="video-wrapper">
+                    <div class="video-wrapper" id="videoWrapper">
+                        <img 
+                            id="videoCoverImg"
+                            class="video-cover" 
+                            src="./images/photo4.jpg?v=14" 
+                            alt="吉他演奏片段"
+                            onclick="startVideo()"
+                        >
+                        <div class="video-play-btn-center"></div>
                         <video 
                             id="mainVideo"
                             playsinline 
                             webkit-playsinline
                             controls
-                            preload="metadata"
-                            poster="./images/photo4.jpg?v=13"
+                            preload="none"
                         >
-                            <source src="./videos/video1.mp4?v=13" type="video/mp4">
+                            <source src="./videos/video1.mp4?v=14" type="video/mp4">
                             您的浏览器不支持视频播放
                         </video>
                     </div>
@@ -1660,7 +1696,18 @@ function prevPhoto() { showPhoto((currentPhotoIndex - 1 + photoCount) % photoCou
 setInterval(() => { nextPhoto(); }, 5000);
 
 const mainVideo = document.getElementById('mainVideo');
+const videoCoverImg = document.getElementById('videoCoverImg');
+const videoPlayBtnCenter = document.querySelector('.video-play-btn-center');
 let wasMusicPlayingBeforeVideo = false;
+
+function startVideo() {
+    if (!mainVideo) return;
+    videoCoverImg.style.display = 'none';
+    videoPlayBtnCenter.style.display = 'none';
+    mainVideo.style.display = 'block';
+    mainVideo.load();
+    mainVideo.play().catch(() => {});
+}
 
 if (mainVideo) {
     mainVideo.addEventListener('play', () => {
@@ -1689,6 +1736,9 @@ if (mainVideo) {
                 updateMusicUI(true);
             }).catch(() => {});
         }
+        videoCoverImg.style.display = 'block';
+        videoPlayBtnCenter.style.display = 'block';
+        mainVideo.style.display = 'none';
     });
 }
 
