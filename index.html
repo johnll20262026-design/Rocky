@@ -1466,8 +1466,8 @@ section.visible { opacity: 1; transform: translateY(0); }
             <span class="music-note">♪</span>
         </button>
     </div>
-    <audio id="bgMusic" loop preload="none">
-        <source src="./music/background.mp3?v=6" type="audio/mpeg">
+    <audio id="bgMusic" loop preload="auto" volume="0.35">
+        <source src="./music/background.mp3?v=7" type="audio/mpeg">
     </audio>
 
     <div class="toast" id="toast"></div>
@@ -1551,7 +1551,15 @@ const musicBtn = document.getElementById('musicBtn');
 const musicVinyl = document.getElementById('musicVinyl');
 const musicHint = document.getElementById('musicHint');
 
-bgMusic.volume = 0.35;
+bgMusic.volume = 0.5;
+
+bgMusic.addEventListener('error', (e) => {
+    console.error('音频加载失败:', e);
+});
+
+bgMusic.addEventListener('loadeddata', () => {
+    console.log('音频加载完成');
+});
 
 function updateMusicUI(playing) {
     if (playing) {
@@ -1571,35 +1579,48 @@ function toggleMusic() {
         isMusicPlaying = false;
         updateMusicUI(false);
     } else {
-        bgMusic.volume = 0.35;
+        bgMusic.volume = 0.5;
         bgMusic.play().then(() => {
             isMusicPlaying = true;
             updateMusicUI(true);
         }).catch(err => {
-            console.log('播放失败:', err);
+            console.log('手动播放失败:', err);
         });
     }
 }
 
+function removeAutoPlayListeners() {
+    document.removeEventListener('click', tryAutoPlay);
+    document.removeEventListener('touchstart', tryAutoPlay);
+    document.removeEventListener('scroll', tryAutoPlay);
+    document.removeEventListener('mousemove', tryAutoPlay);
+    document.removeEventListener('keydown', tryAutoPlay);
+}
+
 function tryAutoPlay() {
-    if (isMusicPlaying) return;
-    bgMusic.volume = 0.35;
+    if (isMusicPlaying || hasTriedAutoplay) return;
+    hasTriedAutoplay = true;
+    bgMusic.volume = 0.5;
     bgMusic.play().then(() => {
         isMusicPlaying = true;
         updateMusicUI(true);
-        document.removeEventListener('click', tryAutoPlay);
-        document.removeEventListener('touchstart', tryAutoPlay);
-        document.removeEventListener('scroll', tryAutoPlay);
-        document.removeEventListener('mousemove', tryAutoPlay);
-        document.removeEventListener('keydown', tryAutoPlay);
-    }).catch(() => {});
+        removeAutoPlayListeners();
+    }).catch(() => {
+        hasTriedAutoplay = false;
+    });
 }
 
 document.addEventListener('click', tryAutoPlay);
 document.addEventListener('touchstart', tryAutoPlay);
 document.addEventListener('scroll', tryAutoPlay, { passive: true });
-document.addEventListener('mousemove', tryAutoPlay, { once: true });
-document.addEventListener('keydown', tryAutoPlay, { once: true });
+document.addEventListener('mousemove', tryAutoPlay);
+document.addEventListener('keydown', tryAutoPlay);
+
+setTimeout(() => {
+    if (!isMusicPlaying) {
+        tryAutoPlay();
+    }
+}, 1000);
 
 document.querySelectorAll('.nav-link').forEach(link => {
     link.addEventListener('click', e => {
@@ -1674,7 +1695,7 @@ document.querySelectorAll('.video-wrapper video').forEach(video => {
     });
     video.addEventListener('pause', () => {
         if (wasMusicPlayingBeforeVideo && !isMusicPlaying) {
-            bgMusic.volume = 0.35;
+            bgMusic.volume = 0.5;
             bgMusic.play().then(() => {
                 isMusicPlaying = true;
                 updateMusicUI(true);
@@ -1683,7 +1704,7 @@ document.querySelectorAll('.video-wrapper video').forEach(video => {
     });
     video.addEventListener('ended', () => {
         if (wasMusicPlayingBeforeVideo && !isMusicPlaying) {
-            bgMusic.volume = 0.35;
+            bgMusic.volume = 0.5;
             bgMusic.play().then(() => {
                 isMusicPlaying = true;
                 updateMusicUI(true);
