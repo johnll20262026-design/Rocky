@@ -499,57 +499,58 @@ section { padding: 100px 0; }
 }
 .video-wrapper {
     width: 100%;
-    max-width: 400px;
+    max-width: 360px;
     margin: 0 auto;
     border-radius: 16px 16px 0 0;
-    overflow: hidden;
     background: #111;
-    position: relative;
+    display: grid;
+}
+.video-cover-container {
+    display: grid;
+    grid-area: 1/1;
+    cursor: pointer;
 }
 .video-cover {
     display: block;
     width: 100%;
     height: auto;
-    cursor: pointer;
-    position: relative;
-    z-index: 1;
+    grid-area: 1/1;
+    border-radius: 16px 16px 0 0;
 }
 .video-play-btn-center {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 80px;
-    height: 80px;
+    grid-area: 1/1;
+    align-self: center;
+    justify-self: center;
+    width: 72px;
+    height: 72px;
     border-radius: 50%;
     background: rgba(212, 168, 83, 0.95);
     pointer-events: none;
     z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
 .video-play-btn-center::after {
     content: '';
-    position: absolute;
-    top: 50%;
-    left: 55%;
-    transform: translate(-50%, -50%);
     width: 0;
     height: 0;
     border-style: solid;
-    border-width: 16px 0 16px 28px;
+    border-width: 14px 0 14px 24px;
     border-color: transparent transparent transparent #1a1a1a;
+    margin-left: 4px;
 }
 .video-wrapper video {
     display: none;
     width: 100%;
     height: auto;
     background: #000;
+    grid-area: 1/1;
+    border-radius: 16px 16px 0 0;
 }
 .video-error {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    grid-area: 1/1;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -561,6 +562,7 @@ section { padding: 100px 0; }
     opacity: 0;
     pointer-events: none;
     z-index: -1;
+    border-radius: 16px 16px 0 0;
 }
 .video-error.show { opacity: 1; pointer-events: auto; z-index: 4; }
 .video-error-icon {
@@ -1130,6 +1132,9 @@ section.visible { opacity: 1; transform: translateY(0); }
     .photo-card.stack-hidden { transform: scale(0.65) translateY(30px) !important; }
     .skill-card { padding: 30px 25px; }
     .videos-grid { grid-template-columns: 1fr; gap: 20px; }
+    .video-wrapper { max-width: 280px; }
+    .video-play-btn-center { width: 60px; height: 60px; }
+    .video-play-btn-center::after { border-width: 12px 0 12px 20px; margin-left: 3px; }
     .contact-text h3 { font-size: 24px; }
     .wechat-qr-wrapper { width: 230px; }
 }
@@ -1338,22 +1343,27 @@ section.visible { opacity: 1; transform: translateY(0); }
             <div class="videos-grid">
                 <div class="video-card">
                     <div class="video-wrapper" id="videoWrapper">
-                        <img 
-                            id="videoCoverImg"
-                            class="video-cover" 
-                            src="./images/photo4.jpg?v=16" 
-                            alt="吉他演奏片段"
-                            onclick="startVideo()"
-                        >
-                        <div class="video-play-btn-center"></div>
+                        <div class="video-cover-container" id="videoCoverContainer" onclick="startVideo()">
+                            <img 
+                                id="videoCoverImg"
+                                class="video-cover" 
+                                src="./images/photo4.jpg?v=17" 
+                                alt="吉他演奏片段"
+                            >
+                            <div class="video-play-btn-center"></div>
+                        </div>
                         <video 
                             id="mainVideo"
                             playsinline 
                             webkit-playsinline
+                            x5-playsinline
+                            x5-video-player-type="h5"
+                            x5-video-player-fullscreen="true"
                             controls
-                            preload="none"
+                            preload="metadata"
+                            poster="./images/photo4.jpg?v=17"
                         >
-                            <source src="./videos/video1.mp4?v=16" type="video/mp4">
+                            <source src="./videos/video1.mp4?v=17" type="video/mp4">
                             您的浏览器不支持视频播放
                         </video>
                     </div>
@@ -1588,7 +1598,7 @@ const musicBtn = document.getElementById('musicBtn');
 const musicVinyl = document.getElementById('musicVinyl');
 const musicHint = document.getElementById('musicHint');
 
-bgMusic.volume = 0.5;
+bgMusic.volume = 0.35;
 
 bgMusic.addEventListener('error', (e) => {
     console.error('音频加载失败:', e);
@@ -1616,7 +1626,7 @@ function toggleMusic() {
         isMusicPlaying = false;
         updateMusicUI(false);
     } else {
-        bgMusic.volume = 0.5;
+        bgMusic.volume = 0.35;
         bgMusic.play().then(() => {
             isMusicPlaying = true;
             updateMusicUI(true);
@@ -1637,7 +1647,7 @@ function removeAutoPlayListeners() {
 function tryAutoPlay() {
     if (isMusicPlaying || hasTriedAutoplay) return;
     hasTriedAutoplay = true;
-    bgMusic.volume = 0.5;
+    bgMusic.volume = 0.35;
     bgMusic.play().then(() => {
         isMusicPlaying = true;
         updateMusicUI(true);
@@ -1700,16 +1710,13 @@ function prevPhoto() { showPhoto((currentPhotoIndex - 1 + photoCount) % photoCou
 setInterval(() => { nextPhoto(); }, 5000);
 
 const mainVideo = document.getElementById('mainVideo');
-const videoCoverImg = document.getElementById('videoCoverImg');
-const videoPlayBtnCenter = document.querySelector('.video-play-btn-center');
+const videoCoverContainer = document.getElementById('videoCoverContainer');
 let wasMusicPlayingBeforeVideo = false;
 
 function startVideo() {
-    if (!mainVideo) return;
-    videoCoverImg.style.display = 'none';
-    videoPlayBtnCenter.style.display = 'none';
+    if (!mainVideo || !videoCoverContainer) return;
+    videoCoverContainer.style.display = 'none';
     mainVideo.style.display = 'block';
-    mainVideo.load();
     mainVideo.play().catch(() => {});
 }
 
@@ -1725,7 +1732,7 @@ if (mainVideo) {
     });
     mainVideo.addEventListener('pause', () => {
         if (wasMusicPlayingBeforeVideo && !isMusicPlaying) {
-            bgMusic.volume = 0.5;
+            bgMusic.volume = 0.35;
             bgMusic.play().then(() => {
                 isMusicPlaying = true;
                 updateMusicUI(true);
@@ -1734,14 +1741,13 @@ if (mainVideo) {
     });
     mainVideo.addEventListener('ended', () => {
         if (wasMusicPlayingBeforeVideo && !isMusicPlaying) {
-            bgMusic.volume = 0.5;
+            bgMusic.volume = 0.35;
             bgMusic.play().then(() => {
                 isMusicPlaying = true;
                 updateMusicUI(true);
             }).catch(() => {});
         }
-        videoCoverImg.style.display = 'block';
-        videoPlayBtnCenter.style.display = 'block';
+        videoCoverContainer.style.display = 'grid';
         mainVideo.style.display = 'none';
     });
 }
