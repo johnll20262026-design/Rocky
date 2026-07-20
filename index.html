@@ -517,6 +517,73 @@ section { padding: 100px 0; }
     background: #000;
     z-index: 1;
 }
+.video-poster {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 3;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(10, 10, 10, 0.7) 0%, rgba(20, 15, 10, 0.85) 100%);
+    transition: opacity 0.4s ease;
+}
+.video-poster.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+.video-poster-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('./images/photo4.jpg?v=2');
+    background-size: cover;
+    background-position: center;
+    filter: blur(2px) brightness(0.5);
+    z-index: -1;
+}
+.video-poster-play {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #d4a853, #f0c878);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 32px rgba(212, 168, 83, 0.4), 0 0 0 8px rgba(212, 168, 83, 0.15);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    margin-bottom: 16px;
+}
+.video-poster:hover .video-poster-play {
+    transform: scale(1.1);
+    box-shadow: 0 12px 40px rgba(212, 168, 83, 0.5), 0 0 0 12px rgba(212, 168, 83, 0.2);
+}
+.video-poster-play::after {
+    content: '';
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 14px 0 14px 24px;
+    border-color: transparent transparent transparent #1a1a1a;
+    margin-left: 4px;
+}
+.video-poster-title {
+    color: #fff;
+    font-size: 16px;
+    font-weight: 500;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+    letter-spacing: 1px;
+}
+.video-poster-icon {
+    font-size: 32px;
+    margin-bottom: 8px;
+}
 .video-error {
     position: absolute;
     top: 0;
@@ -535,7 +602,7 @@ section { padding: 100px 0; }
     pointer-events: none;
     z-index: -1;
 }
-.video-error.show { opacity: 1; pointer-events: auto; z-index: 2; }
+.video-error.show { opacity: 1; pointer-events: auto; z-index: 4; }
 .video-error-icon {
     width: 50px;
     height: 50px;
@@ -1311,10 +1378,16 @@ section.visible { opacity: 1; transform: translateY(0); }
             <div class="videos-grid">
                 <div class="video-card">
                     <div class="video-wrapper">
-                        <video controls playsinline webkit-playsinline preload="metadata">
+                        <video controls playsinline webkit-playsinline preload="metadata" poster="./images/photo4.jpg?v=2">
                             <source src="./videos/video1.mp4?v=5" type="video/mp4">
                             您的浏览器不支持视频播放
                         </video>
+                        <div class="video-poster" id="videoPoster">
+                            <div class="video-poster-bg"></div>
+                            <div class="video-poster-icon">🎸</div>
+                            <div class="video-poster-play"></div>
+                            <div class="video-poster-title" data-i18n="video1-caption">吉他演奏片段</div>
+                        </div>
                         <div class="video-error" id="videoError">
                             <div class="video-error-icon" style="background: linear-gradient(135deg, #d4a853, #f0c878);">⟳</div>
                             <span>视频加载中，请稍候...</span>
@@ -1663,8 +1736,25 @@ function prevPhoto() { showPhoto((currentPhotoIndex - 1 + photoCount) % photoCou
 setInterval(() => { nextPhoto(); }, 5000);
 
 document.querySelectorAll('.video-wrapper video').forEach(video => {
-    const errorEl = video.parentElement.querySelector('.video-error');
+    const wrapper = video.parentElement;
+    const errorEl = wrapper.querySelector('.video-error');
+    const posterEl = wrapper.querySelector('.video-poster');
     let wasMusicPlayingBeforeVideo = false;
+
+    const showPoster = () => {
+        if (posterEl) posterEl.classList.remove('hidden');
+    };
+    const hidePoster = () => {
+        if (posterEl) posterEl.classList.add('hidden');
+    };
+
+    if (posterEl) {
+        posterEl.addEventListener('click', () => {
+            hidePoster();
+            video.play().catch(() => {});
+        });
+    }
+
     const showMsg = (msg, isError) => {
         if (errorEl && isError) {
             const icon = errorEl.querySelector('.video-error-icon');
@@ -1680,10 +1770,19 @@ document.querySelectorAll('.video-wrapper video').forEach(video => {
             errorEl.classList.remove('show');
         }
     };
-    video.addEventListener('loadedmetadata', hideOverlay);
+
+    video.addEventListener('loadedmetadata', () => {
+        hideOverlay();
+    });
     video.addEventListener('canplay', hideOverlay);
-    video.addEventListener('playing', hideOverlay);
-    video.addEventListener('play', hideOverlay);
+    video.addEventListener('playing', () => {
+        hideOverlay();
+        hidePoster();
+    });
+    video.addEventListener('play', () => {
+        hideOverlay();
+        hidePoster();
+    });
     video.addEventListener('play', () => {
         if (isMusicPlaying) {
             wasMusicPlayingBeforeVideo = true;
@@ -1694,6 +1793,7 @@ document.querySelectorAll('.video-wrapper video').forEach(video => {
         }
     });
     video.addEventListener('pause', () => {
+        showPoster();
         if (wasMusicPlayingBeforeVideo && !isMusicPlaying) {
             bgMusic.volume = 0.5;
             bgMusic.play().then(() => {
@@ -1703,6 +1803,7 @@ document.querySelectorAll('.video-wrapper video').forEach(video => {
         }
     });
     video.addEventListener('ended', () => {
+        showPoster();
         if (wasMusicPlayingBeforeVideo && !isMusicPlaying) {
             bgMusic.volume = 0.5;
             bgMusic.play().then(() => {
@@ -1712,6 +1813,7 @@ document.querySelectorAll('.video-wrapper video').forEach(video => {
         }
     });
     video.addEventListener('error', () => {
+        showPoster();
         showMsg('视频加载失败，请检查网络或刷新页面', true);
     });
 });
