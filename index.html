@@ -527,6 +527,10 @@ section { padding: 100px 0; }
     object-fit: contain;
     background: #000;
     z-index: 1;
+    display: none;
+}
+.video-wrapper video.show {
+    display: block;
 }
 .video-play-btn {
     position: absolute;
@@ -1355,9 +1359,8 @@ section.visible { opacity: 1; transform: translateY(0); }
                         <img 
                             id="videoPosterImg"
                             class="video-poster-img" 
-                            src="./images/photo4.jpg?v=10" 
+                            src="./images/photo4.jpg?v=11" 
                             alt="吉他演奏视频封面"
-                            loading="lazy"
                         >
                         <video 
                             id="mainVideo"
@@ -1365,7 +1368,7 @@ section.visible { opacity: 1; transform: translateY(0); }
                             webkit-playsinline 
                             preload="none"
                         >
-                            <source src="./videos/video1.mp4?v=10" type="video/mp4">
+                            <source src="./videos/video1.mp4?v=11" type="video/mp4">
                             您的浏览器不支持视频播放
                         </video>
                         <div class="video-play-btn" id="videoPlayBtn"></div>
@@ -1720,7 +1723,10 @@ let wasMusicPlayingBeforeVideo = false;
 function showVideoPoster() {
     if (videoPosterImg) videoPosterImg.style.display = 'block';
     if (videoPlayBtn) videoPlayBtn.classList.remove('hidden');
-    if (mainVideo) mainVideo.removeAttribute('controls');
+    if (mainVideo) {
+        mainVideo.removeAttribute('controls');
+        mainVideo.classList.remove('show');
+    }
 }
 function hideVideoPoster() {
     if (videoPosterImg) videoPosterImg.style.display = 'none';
@@ -1729,6 +1735,7 @@ function hideVideoPoster() {
 function playVideo() {
     if (!mainVideo) return;
     hideVideoPoster();
+    mainVideo.classList.add('show');
     mainVideo.setAttribute('controls', '');
     mainVideo.load();
     mainVideo.play().catch((err) => {
