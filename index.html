@@ -505,11 +505,17 @@ section { padding: 100px 0; }
     overflow: hidden;
     background: #000;
     position: relative;
+    padding-top: 133%;
 }
 .video-cover {
-    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
+    height: 100%;
+    object-fit: cover;
     cursor: pointer;
+    display: block;
 }
 .video-play-btn-center {
     position: absolute;
@@ -521,6 +527,7 @@ section { padding: 100px 0; }
     border-radius: 50%;
     background: rgba(212, 168, 83, 0.95);
     pointer-events: none;
+    z-index: 2;
 }
 .video-play-btn-center::after {
     content: '';
@@ -535,9 +542,13 @@ section { padding: 100px 0; }
     border-color: transparent transparent transparent #1a1a1a;
 }
 .video-wrapper video {
+    position: absolute;
+    top: 0;
+    left: 0;
     display: none;
     width: 100%;
-    height: auto;
+    height: 100%;
+    object-fit: contain;
     background: #000;
 }
 .video-error {
@@ -1337,7 +1348,7 @@ section.visible { opacity: 1; transform: translateY(0); }
                         <img 
                             id="videoCoverImg"
                             class="video-cover" 
-                            src="./images/photo4.jpg?v=14" 
+                            src="./images/photo4.jpg?v=15" 
                             alt="吉他演奏片段"
                             onclick="startVideo()"
                         >
@@ -1349,7 +1360,7 @@ section.visible { opacity: 1; transform: translateY(0); }
                             controls
                             preload="none"
                         >
-                            <source src="./videos/video1.mp4?v=14" type="video/mp4">
+                            <source src="./videos/video1.mp4?v=15" type="video/mp4">
                             您的浏览器不支持视频播放
                         </video>
                     </div>
