@@ -500,9 +500,11 @@ section { padding: 100px 0; }
 .video-wrapper {
     position: relative;
     width: 100%;
-    padding-top: 56.25%;
-    background: #0a0a0a;
-    border-radius: 12px 12px 0 0;
+    max-width: 360px;
+    margin: 0 auto;
+    aspect-ratio: 9/16;
+    background: #000;
+    border-radius: 16px 16px 0 0;
     overflow: hidden;
 }
 .video-wrapper video {
@@ -1464,8 +1466,8 @@ section.visible { opacity: 1; transform: translateY(0); }
             <span class="music-note">♪</span>
         </button>
     </div>
-    <audio id="bgMusic" loop preload="auto">
-        <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3&v=2" type="audio/mpeg">
+    <audio id="bgMusic" loop preload="none">
+        <source src="./music/background.mp3?v=6" type="audio/mpeg">
     </audio>
 
     <div class="toast" id="toast"></div>
