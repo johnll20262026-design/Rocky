@@ -502,35 +502,21 @@ section { padding: 100px 0; }
     width: 100%;
     max-width: 360px;
     margin: 0 auto;
-    padding-top: 177.78%;
-    background: #111;
+    background: #000;
     border-radius: 16px 16px 0 0;
     overflow: hidden;
 }
 .video-poster-img {
-    position: absolute;
-    top: 0;
-    left: 0;
+    display: block;
     width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: 10;
+    height: auto;
     cursor: pointer;
-    background: #111;
 }
 .video-wrapper video {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    background: #000;
-    z-index: 1;
-    display: none;
-}
-.video-wrapper video.show {
     display: block;
+    width: 100%;
+    height: auto;
+    background: #000;
 }
 .video-play-btn {
     position: absolute;
@@ -548,7 +534,6 @@ section { padding: 100px 0; }
     cursor: pointer;
     transition: all 0.3s ease;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-    pointer-events: none;
 }
 .video-play-btn::after {
     content: '';
@@ -1355,23 +1340,15 @@ section.visible { opacity: 1; transform: translateY(0); }
             </div>
             <div class="videos-grid">
                 <div class="video-card">
-                    <div class="video-wrapper">
+                    <div class="video-wrapper" id="videoWrapper">
                         <img 
                             id="videoPosterImg"
                             class="video-poster-img" 
-                            src="./images/photo4.jpg?v=11" 
+                            src="./images/photo4.jpg?v=12" 
                             alt="吉他演奏视频封面"
+                            onclick="playVideo()"
                         >
-                        <video 
-                            id="mainVideo"
-                            playsinline 
-                            webkit-playsinline 
-                            preload="none"
-                        >
-                            <source src="./videos/video1.mp4?v=11" type="video/mp4">
-                            您的浏览器不支持视频播放
-                        </video>
-                        <div class="video-play-btn" id="videoPlayBtn"></div>
+                        <div class="video-play-btn" id="videoPlayBtn" onclick="playVideo()"></div>
                     </div>
                     <div class="video-info">
                         <span class="video-caption" data-i18n="video1-caption">吉他演奏片段</span>
@@ -1715,45 +1692,43 @@ function prevPhoto() { showPhoto((currentPhotoIndex - 1 + photoCount) % photoCou
 
 setInterval(() => { nextPhoto(); }, 5000);
 
-const mainVideo = document.getElementById('mainVideo');
+const videoWrapper = document.getElementById('videoWrapper');
 const videoPlayBtn = document.getElementById('videoPlayBtn');
 const videoPosterImg = document.getElementById('videoPosterImg');
 let wasMusicPlayingBeforeVideo = false;
+let videoCreated = false;
 
 function showVideoPoster() {
-    if (videoPosterImg) videoPosterImg.style.display = 'block';
-    if (videoPlayBtn) videoPlayBtn.classList.remove('hidden');
-    if (mainVideo) {
-        mainVideo.removeAttribute('controls');
-        mainVideo.classList.remove('show');
-    }
+    const existingVideo = videoWrapper.querySelector('video');
+    if (existingVideo) existingVideo.remove();
+    videoPosterImg.style.display = 'block';
+    videoPlayBtn.classList.remove('hidden');
+    videoCreated = false;
 }
-function hideVideoPoster() {
-    if (videoPosterImg) videoPosterImg.style.display = 'none';
-    if (videoPlayBtn) videoPlayBtn.classList.add('hidden');
-}
+
 function playVideo() {
-    if (!mainVideo) return;
-    hideVideoPoster();
-    mainVideo.classList.add('show');
-    mainVideo.setAttribute('controls', '');
-    mainVideo.load();
-    mainVideo.play().catch((err) => {
-        console.log('视频播放失败:', err);
-        showVideoPoster();
-    });
-}
-
-if (videoPosterImg) {
-    videoPosterImg.addEventListener('click', playVideo);
-}
-if (videoPlayBtn) {
-    videoPlayBtn.addEventListener('click', playVideo);
-}
-
-if (mainVideo) {
-    mainVideo.addEventListener('play', () => {
-        hideVideoPoster();
+    if (videoCreated) return;
+    videoCreated = true;
+    videoPosterImg.style.display = 'none';
+    videoPlayBtn.classList.add('hidden');
+    
+    const video = document.createElement('video');
+    video.setAttribute('playsinline', '');
+    video.setAttribute('webkit-playsinline', '');
+    video.setAttribute('controls', '');
+    video.style.width = '100%';
+    video.style.height = 'auto';
+    video.style.display = 'block';
+    video.style.background = '#000';
+    
+    const source = document.createElement('source');
+    source.src = './videos/video1.mp4?v=12';
+    source.type = 'video/mp4';
+    video.appendChild(source);
+    
+    videoWrapper.insertBefore(video, videoPlayBtn);
+    
+    video.addEventListener('play', () => {
         if (isMusicPlaying) {
             wasMusicPlayingBeforeVideo = true;
             bgMusic.pause();
@@ -1762,8 +1737,8 @@ if (mainVideo) {
             wasMusicPlayingBeforeVideo = false;
         }
     });
-    mainVideo.addEventListener('pause', () => {
-        showVideoPoster();
+    
+    video.addEventListener('pause', () => {
         if (wasMusicPlayingBeforeVideo && !isMusicPlaying) {
             bgMusic.volume = 0.5;
             bgMusic.play().then(() => {
@@ -1771,9 +1746,10 @@ if (mainVideo) {
                 updateMusicUI(true);
             }).catch(() => {});
         }
+        setTimeout(showVideoPoster, 100);
     });
-    mainVideo.addEventListener('ended', () => {
-        showVideoPoster();
+    
+    video.addEventListener('ended', () => {
         if (wasMusicPlayingBeforeVideo && !isMusicPlaying) {
             bgMusic.volume = 0.5;
             bgMusic.play().then(() => {
@@ -1781,6 +1757,12 @@ if (mainVideo) {
                 updateMusicUI(true);
             }).catch(() => {});
         }
+        setTimeout(showVideoPoster, 100);
+    });
+    
+    video.play().catch((err) => {
+        console.log('视频播放失败:', err);
+        setTimeout(showVideoPoster, 100);
     });
 }
 
