@@ -502,10 +502,21 @@ section { padding: 100px 0; }
     width: 100%;
     max-width: 360px;
     margin: 0 auto;
-    aspect-ratio: 9/16;
-    background: #000;
+    padding-top: 177.78%;
+    background: #111;
     border-radius: 16px 16px 0 0;
     overflow: hidden;
+}
+.video-poster-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 10;
+    cursor: pointer;
+    background: #111;
 }
 .video-wrapper video {
     position: absolute;
@@ -513,7 +524,7 @@ section { padding: 100px 0; }
     left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
     background: #000;
     z-index: 1;
 }
@@ -529,10 +540,11 @@ section { padding: 100px 0; }
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 5;
+    z-index: 15;
     cursor: pointer;
     transition: all 0.3s ease;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    pointer-events: none;
 }
 .video-play-btn::after {
     content: '';
@@ -542,10 +554,6 @@ section { padding: 100px 0; }
     border-width: 16px 0 16px 28px;
     border-color: transparent transparent transparent #1a1a1a;
     margin-left: 6px;
-}
-.video-play-btn:hover {
-    transform: translate(-50%, -50%) scale(1.1);
-    background: rgba(240, 200, 120, 0.95);
 }
 .video-play-btn.hidden {
     display: none;
@@ -1344,15 +1352,20 @@ section.visible { opacity: 1; transform: translateY(0); }
             <div class="videos-grid">
                 <div class="video-card">
                     <div class="video-wrapper">
+                        <img 
+                            id="videoPosterImg"
+                            class="video-poster-img" 
+                            src="./images/photo4.jpg?v=10" 
+                            alt="吉他演奏视频封面"
+                            loading="lazy"
+                        >
                         <video 
                             id="mainVideo"
                             playsinline 
                             webkit-playsinline 
-                            preload="metadata"
-                            poster="./images/photo4.jpg?v=9"
-                            controls
+                            preload="none"
                         >
-                            <source src="./videos/video1.mp4?v=9" type="video/mp4">
+                            <source src="./videos/video1.mp4?v=10" type="video/mp4">
                             您的浏览器不支持视频播放
                         </video>
                         <div class="video-play-btn" id="videoPlayBtn"></div>
@@ -1701,18 +1714,39 @@ setInterval(() => { nextPhoto(); }, 5000);
 
 const mainVideo = document.getElementById('mainVideo');
 const videoPlayBtn = document.getElementById('videoPlayBtn');
+const videoPosterImg = document.getElementById('videoPosterImg');
 let wasMusicPlayingBeforeVideo = false;
 
-if (videoPlayBtn && mainVideo) {
-    videoPlayBtn.addEventListener('click', () => {
-        videoPlayBtn.classList.add('hidden');
-        mainVideo.play().catch(() => {});
+function showVideoPoster() {
+    if (videoPosterImg) videoPosterImg.style.display = 'block';
+    if (videoPlayBtn) videoPlayBtn.classList.remove('hidden');
+    if (mainVideo) mainVideo.removeAttribute('controls');
+}
+function hideVideoPoster() {
+    if (videoPosterImg) videoPosterImg.style.display = 'none';
+    if (videoPlayBtn) videoPlayBtn.classList.add('hidden');
+}
+function playVideo() {
+    if (!mainVideo) return;
+    hideVideoPoster();
+    mainVideo.setAttribute('controls', '');
+    mainVideo.load();
+    mainVideo.play().catch((err) => {
+        console.log('视频播放失败:', err);
+        showVideoPoster();
     });
+}
+
+if (videoPosterImg) {
+    videoPosterImg.addEventListener('click', playVideo);
+}
+if (videoPlayBtn) {
+    videoPlayBtn.addEventListener('click', playVideo);
 }
 
 if (mainVideo) {
     mainVideo.addEventListener('play', () => {
-        if (videoPlayBtn) videoPlayBtn.classList.add('hidden');
+        hideVideoPoster();
         if (isMusicPlaying) {
             wasMusicPlayingBeforeVideo = true;
             bgMusic.pause();
@@ -1722,7 +1756,7 @@ if (mainVideo) {
         }
     });
     mainVideo.addEventListener('pause', () => {
-        if (videoPlayBtn) videoPlayBtn.classList.remove('hidden');
+        showVideoPoster();
         if (wasMusicPlayingBeforeVideo && !isMusicPlaying) {
             bgMusic.volume = 0.5;
             bgMusic.play().then(() => {
@@ -1732,7 +1766,7 @@ if (mainVideo) {
         }
     });
     mainVideo.addEventListener('ended', () => {
-        if (videoPlayBtn) videoPlayBtn.classList.remove('hidden');
+        showVideoPoster();
         if (wasMusicPlayingBeforeVideo && !isMusicPlaying) {
             bgMusic.volume = 0.5;
             bgMusic.play().then(() => {
