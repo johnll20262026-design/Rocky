@@ -1266,7 +1266,7 @@ section.visible { opacity: 1; transform: translateY(0); }
                 <div class="photo-stack" id="photoStack">
                     <div class="photo-card" data-index="0" onclick="showPhoto(0)">
                         <div class="photo-inner">
-                            <img src="./images/photo1.jpg?v=5" alt="Photo 1">
+                            <img src="./images/photo1.jpg?v=19" alt="Photo 1" loading="lazy">
                             <div class="photo-overlay">
                                 <span class="photo-caption" data-i18n="photo1-caption">山河之间，摇滚不止</span>
                             </div>
@@ -1274,7 +1274,7 @@ section.visible { opacity: 1; transform: translateY(0); }
                     </div>
                     <div class="photo-card" data-index="1" onclick="showPhoto(1)">
                         <div class="photo-inner">
-                            <img src="./images/photo2.jpg?v=5" alt="Photo 2">
+                            <img src="./images/photo2.jpg?v=19" alt="Photo 2" loading="lazy">
                             <div class="photo-overlay">
                                 <span class="photo-caption" data-i18n="photo2-caption">静谧时光，思考人生</span>
                             </div>
@@ -1282,7 +1282,7 @@ section.visible { opacity: 1; transform: translateY(0); }
                     </div>
                     <div class="photo-card" data-index="2" onclick="showPhoto(2)">
                         <div class="photo-inner">
-                            <img src="./images/photo3.jpg?v=5" alt="Photo 3">
+                            <img src="./images/photo3.jpg?v=19" alt="Photo 3" loading="lazy">
                             <div class="photo-overlay">
                                 <span class="photo-caption" data-i18n="photo3-caption">展翅高飞，自由翱翔</span>
                             </div>
@@ -1290,7 +1290,7 @@ section.visible { opacity: 1; transform: translateY(0); }
                     </div>
                     <div class="photo-card" data-index="3" onclick="showPhoto(3)">
                         <div class="photo-inner">
-                            <img src="./images/photo4.jpg?v=5" alt="Photo 4">
+                            <img src="./images/photo4.jpg?v=19" alt="Photo 4" loading="lazy">
                             <div class="photo-overlay">
                                 <span class="photo-caption" data-i18n="photo4-caption">音乐时光，旋律相伴</span>
                             </div>
@@ -1298,7 +1298,7 @@ section.visible { opacity: 1; transform: translateY(0); }
                     </div>
                     <div class="photo-card" data-index="4" onclick="showPhoto(4)">
                         <div class="photo-inner">
-                            <img src="./images/photo5.jpg?v=5" alt="Photo 5">
+                            <img src="./images/photo5.jpg?v=19" alt="Photo 5" loading="lazy">
                             <div class="photo-overlay">
                                 <span class="photo-caption" data-i18n="photo5-caption">精彩瞬间，记录生活</span>
                             </div>
@@ -1306,7 +1306,7 @@ section.visible { opacity: 1; transform: translateY(0); }
                     </div>
                     <div class="photo-card" data-index="5" onclick="showPhoto(5)">
                         <div class="photo-inner">
-                            <img src="./images/photo6.jpg?v=5" alt="Photo 6">
+                            <img src="./images/photo6.jpg?v=19" alt="Photo 6" loading="lazy">
                             <div class="photo-overlay">
                                 <span class="photo-caption" data-i18n="photo6-caption">美好时刻，永恒记忆</span>
                             </div>
@@ -1347,23 +1347,24 @@ section.visible { opacity: 1; transform: translateY(0); }
                             <img 
                                 id="videoCoverImg"
                                 class="video-cover" 
-                                src="./images/photo4.jpg?v=17" 
+                                src="./images/photo4.jpg?v=19" 
                                 alt="吉他演奏片段"
+                                loading="lazy"
                             >
                             <div class="video-play-btn-center"></div>
                         </div>
                         <video 
                             id="mainVideo"
                             playsinline 
-                            webkit-playsinline
+                            webkit-playsinline="true"
                             x5-playsinline
-                            x5-video-player-type="h5"
+                            x5-video-player-type="h5-page"
                             x5-video-player-fullscreen="true"
                             controls
                             preload="metadata"
-                            poster="./images/photo4.jpg?v=17"
+                            poster="./images/photo4.jpg?v=19"
                         >
-                            <source src="./videos/video1.mp4?v=17" type="video/mp4">
+                            <source src="./videos/video1.mp4?v=19" type="video/mp4">
                             您的浏览器不支持视频播放
                         </video>
                     </div>
@@ -1453,7 +1454,7 @@ section.visible { opacity: 1; transform: translateY(0); }
                 </div>
                 <div class="wechat-card">
                     <div class="wechat-qr-wrapper">
-                        <img class="wechat-qr-img" src="./images/wechat-qr.png?v=5" alt="微信二维码">
+                        <img class="wechat-qr-img" src="./images/wechat-qr.png?v=19" alt="微信二维码" loading="lazy">
                     </div>
                     <div class="wechat-info">
                         <div class="wechat-id-section">
@@ -1513,8 +1514,8 @@ section.visible { opacity: 1; transform: translateY(0); }
             <span class="music-note">♪</span>
         </button>
     </div>
-    <audio id="bgMusic" loop preload="metadata" volume="0.35">
-        <source src="./music/background.mp3?v=18" type="audio/mpeg">
+    <audio id="bgMusic" loop preload="auto">
+        <source src="./music/background.mp3?v=19" type="audio/mpeg">
     </audio>
 
     <div class="toast" id="toast"></div>
@@ -1592,31 +1593,14 @@ function closeMobileMenu() {
 }
 
 let isMusicPlaying = false;
-let hasTriedAutoplay = false;
-let autoplayRetryCount = 0;
-const MAX_AUTOPLAY_RETRIES = 5;
+let audioUnlocked = false;
+let autoplayInProgress = false;
 const bgMusic = document.getElementById('bgMusic');
 const musicBtn = document.getElementById('musicBtn');
 const musicVinyl = document.getElementById('musicVinyl');
 const musicHint = document.getElementById('musicHint');
 
 bgMusic.volume = 0.35;
-
-bgMusic.addEventListener('error', (e) => {
-    console.warn('音频加载出错，尝试继续...');
-});
-
-bgMusic.addEventListener('stalled', () => {
-    console.log('音频缓冲中...');
-});
-
-bgMusic.addEventListener('waiting', () => {
-    console.log('音频等待缓冲...');
-});
-
-bgMusic.addEventListener('canplaythrough', () => {
-    console.log('音频可以流畅播放');
-});
 
 function updateMusicUI(playing) {
     if (playing) {
@@ -1630,24 +1614,51 @@ function updateMusicUI(playing) {
     }
 }
 
-function startMusicPlay() {
-    return new Promise((resolve, reject) => {
-        const playPromise = bgMusic.play();
-        if (playPromise !== undefined) {
-            playPromise.then(() => {
-                isMusicPlaying = true;
-                updateMusicUI(true);
-                resolve();
-            }).catch((err) => {
-                isMusicPlaying = false;
-                updateMusicUI(false);
-                reject(err);
-            });
-        } else {
+function doPlayMusic() {
+    if (isMusicPlaying || autoplayInProgress) return Promise.resolve();
+    autoplayInProgress = true;
+    bgMusic.volume = 0.35;
+    const p = bgMusic.play();
+    if (p !== undefined) {
+        return p.then(() => {
             isMusicPlaying = true;
+            autoplayInProgress = false;
             updateMusicUI(true);
-            resolve();
-        }
+        }).catch((err) => {
+            autoplayInProgress = false;
+            isMusicPlaying = false;
+            updateMusicUI(false);
+            throw err;
+        });
+    } else {
+        isMusicPlaying = true;
+        autoplayInProgress = false;
+        updateMusicUI(true);
+        return Promise.resolve();
+    }
+}
+
+function unlockAudio() {
+    if (audioUnlocked) return;
+    audioUnlocked = true;
+    bgMusic.volume = 0.35;
+    return bgMusic.play().then(() => {
+        bgMusic.pause();
+        bgMusic.currentTime = 0;
+        isMusicPlaying = false;
+        updateMusicUI(false);
+    }).catch(() => {});
+}
+
+function tryAutoPlayMusic() {
+    if (isMusicPlaying) {
+        cleanupAutoplayListeners();
+        return;
+    }
+    unlockAudio().then(() => {
+        doPlayMusic().then(() => {
+            cleanupAutoplayListeners();
+        }).catch(() => {});
     });
 }
 
@@ -1657,49 +1668,51 @@ function toggleMusic() {
         isMusicPlaying = false;
         updateMusicUI(false);
     } else {
-        startMusicPlay().catch(err => {
-            console.log('播放失败:', err);
+        unlockAudio().then(() => {
+            doPlayMusic().catch(() => {});
         });
     }
 }
 
-function removeAutoPlayListeners() {
-    document.removeEventListener('click', tryAutoPlay);
-    document.removeEventListener('touchstart', tryAutoPlay);
-    document.removeEventListener('scroll', tryAutoPlay);
-    document.removeEventListener('mousemove', tryAutoPlay);
-    document.removeEventListener('keydown', tryAutoPlay);
+function cleanupAutoplayListeners() {
+    document.removeEventListener('click', tryAutoPlayMusic);
+    document.removeEventListener('touchstart', tryAutoPlayMusic);
+    document.removeEventListener('touchend', tryAutoPlayMusic);
+    document.removeEventListener('scroll', onFirstScroll);
+    document.removeEventListener('mousemove', onFirstMove);
+    document.removeEventListener('keydown', tryAutoPlayMusic);
+    window.removeEventListener('load', tryAutoPlayMusic);
 }
 
-let firstInteractionHappened = false;
-function tryAutoPlay() {
-    if (isMusicPlaying) {
-        removeAutoPlayListeners();
-        return;
-    }
-    if (autoplayRetryCount >= MAX_AUTOPLAY_RETRIES) {
-        removeAutoPlayListeners();
-        return;
-    }
-    firstInteractionHappened = true;
-    autoplayRetryCount++;
-    bgMusic.volume = 0.35;
-    startMusicPlay().then(() => {
-        removeAutoPlayListeners();
-    }).catch(() => {});
+let hasScrolled = false;
+function onFirstScroll() {
+    if (hasScrolled) return;
+    hasScrolled = true;
+    tryAutoPlayMusic();
 }
 
-document.addEventListener('click', tryAutoPlay);
-document.addEventListener('touchstart', tryAutoPlay, { passive: true });
-document.addEventListener('scroll', tryAutoPlay, { passive: true });
-document.addEventListener('mousemove', tryAutoPlay);
-document.addEventListener('keydown', tryAutoPlay);
-
-setTimeout(() => {
-    if (!isMusicPlaying && firstInteractionHappened) {
-        tryAutoPlay();
+let moveCount = 0;
+function onFirstMove() {
+    moveCount++;
+    if (moveCount >= 3) {
+        document.removeEventListener('mousemove', onFirstMove);
+        tryAutoPlayMusic();
     }
-}, 2000);
+}
+
+document.addEventListener('click', tryAutoPlayMusic);
+document.addEventListener('touchstart', tryAutoPlayMusic, { passive: true });
+document.addEventListener('touchend', tryAutoPlayMusic, { passive: true });
+document.addEventListener('scroll', onFirstScroll, { passive: true });
+document.addEventListener('mousemove', onFirstMove);
+document.addEventListener('keydown', tryAutoPlayMusic);
+window.addEventListener('load', () => {
+    setTimeout(() => {
+        if (!isMusicPlaying) {
+            tryAutoPlayMusic();
+        }
+    }, 500);
+});
 
 document.querySelectorAll('.nav-link').forEach(link => {
     link.addEventListener('click', e => {
